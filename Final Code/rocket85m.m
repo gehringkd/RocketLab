@@ -57,7 +57,7 @@ s(3) = m_air_0;
 parameters(14) = m_air_0;
 
 %Find final distance x
-[~,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,...
+[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,...
 system,parameters),t,s);
 x = max(dsdt(:,6));
 
@@ -73,7 +73,7 @@ while x<84 || x>86
         parameters(9) = C_D;
     
         %Find final distance x
-        [~,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,...
+        [~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
         parameters),t,s);
         x = max(dsdt(:,6));
     end
@@ -95,7 +95,7 @@ while x<84 || x>86
         s(2) = m_R_0;
         s(3) = m_air_0;
         parameters(14) = m_air_0;
-        [t,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,...
+        [t,dsdt] = ode45(@(t,system) rocketTrajectory(t,...
         system,parameters),t,s);
         x = max(dsdt(:,6));
     end

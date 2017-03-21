@@ -45,7 +45,7 @@ m_bottle = parameters(19);
 theta = system(4);
 
 %% Get initial distance x and height z for comparison
-[~,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,...
+[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
 parameters),t,system);
 x = max(dsdt(:,6));
 z = max(dsdt(:,7));
@@ -61,17 +61,17 @@ parameters_temp = parameters;
 
 %Find final distance x and tallest height z for each C_D
 parameters_temp(9) = C_D_10;
-[~,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,...
+[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
 parameters_temp),t,system);
 C_D_10_x = max(dsdt(:,6));
 C_D_10_z = max(dsdt(:,7));
 parameters_temp(9) = C_D_15;
-[~,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,...
+[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
 parameters_temp),t,system);
 C_D_15_x = max(dsdt(:,6));
 C_D_15_z = max(dsdt(:,7));
 parameters_temp(9) = C_D_25;
-[~,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,...
+[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
 parameters_temp),t,system);
 C_D_25_x = max(dsdt(:,6));
 C_D_25_z = max(dsdt(:,7));
@@ -95,17 +95,17 @@ system_temp = system;
 
 %Find final distance x and tallest height z for each C_D
 system_temp(4) = th_10;
-[~,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,system_temp,...
+[~,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,system_temp,...
 parameters),t,system_temp);
 th_10_x = max(dsdt(:,6));
 th_10_z = max(dsdt(:,7));
 system_temp(4) = th_15;
-[~,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,system_temp,...
+[~,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,system_temp,...
 parameters),t,system_temp);
 th_15_x = max(dsdt(:,6));
 th_15_z = max(dsdt(:,7));
 system_temp(4) = th_25;
-[~,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,system_temp,...
+[~,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,system_temp,...
 parameters),t,system_temp);
 th_25_x = max(dsdt(:,6));
 th_25_z = max(dsdt(:,7));
@@ -135,7 +135,7 @@ parameters_temp(11) = p0_10;
 system_temp(1,2) = m_R_0;
 system_temp(1,3) = m_air_0;
 parameters_temp(14) = m_air_0;
-[~,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,...
+[~,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,...
 system_temp,parameters_temp),t,system_temp);
 p0_10_x = max(dsdt(:,6));
 p0_10_z = max(dsdt(:,7));
@@ -145,7 +145,7 @@ parameters_temp(11) = p0_15;
 system_temp(1,2) = m_R_0;
 system_temp(1,3) = m_air_0;
 parameters_temp(14) = m_air_0;
-[~,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,...
+[~,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,...
 system_temp,parameters_temp),t,system_temp);
 p0_15_x = max(dsdt(:,6));
 p0_15_z = max(dsdt(:,7));
@@ -155,7 +155,7 @@ parameters_temp(11) = p0_25;
 system_temp(1,2) = m_R_0;
 system_temp(1,3) = m_air_0;
 parameters_temp(14) = m_air_0;
-[~,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,...
+[~,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,...
 system_temp,parameters_temp),t,system_temp);
 p0_25_x = max(dsdt(:,6));
 p0_25_z = max(dsdt(:,7));
@@ -187,7 +187,7 @@ parameters_temp(15) = v0_10;
         system_temp(1,2) = m_R_0;
         system_temp(1,3) = m_air_0;
         parameters_temp(14) = m_air_0;
-    [t,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,...
+    [t,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,...
     system_temp,parameters_temp),t,system_temp);
 v0_10_x = max(dsdt(:,6));
 v0_10_z = max(dsdt(:,7));
@@ -198,7 +198,7 @@ parameters_temp(15) = v0_15;
         system_temp(1,2) = m_R_0;
         system_temp(1,3) = m_air_0;
         parameters_temp(14) = m_air_0;
-    [t,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,...
+    [t,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,...
     system_temp,parameters_temp),t,system_temp);
 v0_15_x = max(dsdt(:,6));
 v0_15_z = max(dsdt(:,7));
@@ -209,7 +209,7 @@ parameters_temp(15) = v0_25;
         system_temp(1,2) = m_R_0;
         system_temp(1,3) = m_air_0;
         parameters_temp(14) = m_air_0;
-    [t,dsdt] = ode45(@(t,system_temp) bottleRocketTrajectory(t,...
+    [t,dsdt] = ode45(@(t,system_temp) rocketTrajectory(t,...
     system_temp,parameters_temp),t,system_temp);
 v0_25_x = max(dsdt(:,6));
 v0_25_z = max(dsdt(:,7));

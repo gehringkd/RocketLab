@@ -25,10 +25,10 @@ Last modified: 12/2/16
 clear all;close all;clc;
 
 %Get all parameters for flight (all came from verification data)
-[parameters,system,t] = bottleRocketSetParameters;
+[parameters,system,t] = rocketParameters;
 
 %Calculate flight path using ode45
-[t,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,parameters) ...
+[t,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,parameters) ...
     ,t,system);
     
     %Graph flight path
@@ -41,8 +41,10 @@ clear all;close all;clc;
 
     
  %Find which parameter is most "sensitive" (which changes flight path most)
-bottleRocketSensitivity(t,system,parameters);
+rocketSensitivity(t,system,parameters);
  
  %Find options to get 85m
- bottleRocket85m(t,system,parameters);
-    
+ rocket85m(t,system,parameters);
+   
+
+varyVolWater(t,system,parameters);
