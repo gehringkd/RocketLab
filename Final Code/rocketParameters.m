@@ -23,6 +23,13 @@ function [parameters,system,t] = rocketParameters()
     p_ambient = 12.03; %psi
         p_ambient = p_ambient*6895; %Pa
     T_air_i = 300; %K
+
+    % --------------------------- Wind ------------------------------
+    V_wind = [0; 0]; % wind velocity components in [x; z] [m/s]
+
+    % For when we have 3D working...
+    %V_wind = [0; 0; 0]; % wind velocity components in [x; y; z] [m/s]
+    % ---------------------------------------------------------------
     
     %Flight parameters - likely to change
     C_d = 0.8; %discharge coefficient
@@ -68,7 +75,7 @@ function [parameters,system,t] = rocketParameters()
 %other paramters and were not included)
     parameters = [g; gamma; rho_water; R; rho_air_ambient; p_ambient; ...
         T_air_i; C_d; C_D; p_gage; p_0; vol_water_i; vol_bottle; ... 
-        m_air_0; v_0; A_throat; A_bottle; gage_p_allow; m_bottle];
+        m_air_0; v_0; A_throat; A_bottle; gage_p_allow; m_bottle; V_wind];
 %Put time range in outgoing array
     t = [ti tf];
 end

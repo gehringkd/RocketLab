@@ -19,45 +19,63 @@ Suggested function call:
 [t,dsdt] = ode45(@(t,system) bottleRocketTrajectory(t,system,parameters) ...
     ,t,system);
 
-Created by 4250df2b7e8b
-Created on 11/22/16
-Last edited: 12/2/16
+Created by:	Kayla Gehring
+Modified by:	Keith Covington
+Created:	11/22/16
+Modified:	03/23/17
 %}
+
 
 %% Extract needed parameters
 %parameters = [g; gamma; rho_water; R; rho_air_ambient; p_ambient; ...
  %       T_air_i; C_d; C_D; p_gage; p_0; vol_water_i; vol_bottle; ... 
  %       m_air_0; v_0; A_throat; A_bottle; m_bottle];
-g = parameters(1); %m/s^2
-gamma = parameters(2); %specific heat ratio of air
-rho_w = parameters(3); %kg/m^3, density of water
-R = parameters(4); %kg/m^3, density of water; % J/kg/K
-rho_a = parameters(5); %kg/m^3, density of ambient air
-p_a = parameters(6); %Pa
-c_d = parameters(8); %discharge coefficient
-c_D = parameters(9); %drag coefficent
-p_0 = parameters(11); %Pa
-Vol_B = parameters(13); %m^3, volume of the bottle
+g = parameters(1);	%m/s^2
+gamma = parameters(2);	%specific heat ratio of air
+rho_w = parameters(3);	%kg/m^3, density of water
+R = parameters(4);	%kg/m^3, density of water; % J/kg/K
+rho_a = parameters(5);	%kg/m^3, density of ambient air
+p_a = parameters(6);	%Pa
+c_d = parameters(8);	%discharge coefficient
+c_D = parameters(9);	%drag coefficent
+p_0 = parameters(11);	%Pa
+Vol_B = parameters(13);	%m^3, volume of the bottle
 m_air_i = parameters(14); %kg, initial mass of air
-v_0 = parameters(15); %m^3, initial volume of air
-A_t = parameters(16); %m^2, area of throat
-A_B = parameters(17); %m^2, area of bottle
+v_0 = parameters(15);	%m^3, initial volume of air
+A_t = parameters(16);	%m^2, area of throat
+A_B = parameters(17);	%m^2, area of bottle
+V_wind = parameters(18); % velocity of wind [m/s]
+
 
 %% Make array s (inputs of rocket system) useable
-%s = [v_0 m_R_0 m_air_0 theta_0 V_0 x_0 z_0];
-s = s';
 
-v = s(1);
-m_R = s(2);
-m_air = s(3);
-th = s(4);
-V = s(5);
-x = s(6);
-z = s(7);
+v = s(1);	% volume of air in tank [m^3]
+m_R = s(2);	% mass of rocket [kg]
+m_air = s(3);	% mass of air in tank [kg]
+th = s(4);	% theta - angle of rocket from trajectory [rad]
+V = s(5);	% velocity [m/s]
+x = s(6);	% x-position [m]
+z = s(7);	% z-position [m]
+
+
+%% Take-off Phase
+%{
+
+Maybe we should consider adding a phase for when the rocket is sliding past
+the launch rails...
+
+We could:
+- Subtract the frictional force from the thrust force
+- Add a normal force from the rails to make sure bottle doesn't spike into
+  the ground.
+- Define direction of V as a static value
+
+%}
+
 
 %% First Phase - Thrust generation before water is exhausted
-%This phase continues until the volume of the air is equal to the volume of
-%the bottle
+% This phase continues until the volume of the air is equal to the volume of
+% the bottle
 
 if v < Vol_B
 
@@ -80,6 +98,7 @@ if v < Vol_B
     dm_Rdt2 = -c_d*A_t*rho_w*sqrt(2*(p-p_a)/rho_w);
     
 end
+
 
 %% Second Phase - Thrust generation after water is exhausted
 %This phase continues until the difference of air pressure inside the
@@ -151,9 +170,26 @@ if z <= 0
     dzdt = 0;
 
 else
-   
+
+
+%{
+How to adapt this to 2D version with wind consideration:
+
+Vrel = Vrocket - V_wind
+h = Vrel/|Vrel|   (vector)
+T = Thrust*h
+D = Drag*h
+g = [0; -9.81]
+%}
+
+%{
+After adapting this to the 2D version with wind, we can add in a y-component to the vectors to make it 3D.
+%}
+
     %Equation for drag
-    D = (rho_a/2)*(V^2)*c_D*A_B; %N
+    D = (rho_a/2)*(V^2)*c_D*A_B;  % [N]
+
+	%V = V - Vwind; % Vrel due to wind [m/s]
 
     %Given an initial velocity V, the change of V with respect to time is dVdt
     %below, with m being the mass of the rocket and th being theta
