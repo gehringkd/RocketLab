@@ -1,4 +1,4 @@
-function [dsdt] = rocketTrajectory(t,s,parameters)
+function [dsdt] = rocketTrajectory(t,s,state,parameters)
 %BOTTLEROCKETTRAJECTORY is a system of equations meant to be solved using
 %ode45 to plot the trajectory of a bottle rocket.
 %{
@@ -22,7 +22,7 @@ Suggested function call:
 Created by:	Kayla Gehring
 Modified by:	Keith Covington
 Created:	11/22/16
-Modified:	03/23/17
+Modified:	04/04/17
 %}
 
 
@@ -53,9 +53,19 @@ v = s(1);	% volume of air in tank [m^3]
 m_R = s(2);	% mass of rocket [kg]
 m_air = s(3);	% mass of air in tank [kg]
 th = s(4);	% theta - angle of rocket from trajectory [rad]
-V = s(5);	% velocity [m/s]
-x = s(6);	% x-position [m]
-z = s(7);	% z-position [m]
+
+
+
+%% Get state parameters passed into function
+Vx = state(1);	% x-component of velocity [m/s]
+Vy = state(2);	% y-component of velocity [m/s]
+Vz = state(3);	% z-component of velocity [m/s]
+x = state(4);	% x-position [m]
+y = state(5);	% y-position [m]
+z = state(6);	% z-position [m]
+
+% Define velocity vector and magnitude of velocity
+V = [Vx; Vy; Vz];
 
 
 %% Take-off Phase
@@ -186,40 +196,67 @@ g = [0; -9.81]
 After adapting this to the 2D version with wind, we can add in a y-component to the vectors to make it 3D.
 %}
 
-    %Equation for drag
-    D = (rho_a/2)*(V^2)*c_D*A_B;  % [N]
 
-	%V = V - Vwind; % Vrel due to wind [m/s]
+	Vrel = V - V_wind; % Vrel due to wind [m/s]
+	Vrel_mag = norm(Vrel); % magnitude of relative velocity [m/s]
+	headVec = Vrel/Vrel_mag; % heading vector (unit vector of Vrel)
 
-    %Given an initial velocity V, the change of V with respect to time is dVdt
-    %below, with m being the mass of the rocket and th being theta
-    dVdt = (F-D-m_R*g*sin(th))/m_R; %dVdt = m/s^2, V=m/s
+	if z >= 1
+		g = [0; 0; -9.81]; % g into vector form
+		headVec = [sqrt(2); 0; sqrt(2)];
+	elseif z < 1
+		g = [0; 0; 0]
+	else
+		disp('Wuuuuuut');
+	end
 
-    %Given an initial angle theta, the change of theta with respect to time is:
-    if V < 1 %V == 0 causes an immediately negative trajectory
-        dthdt = 0;
-    else
-        dthdt = (-g*cos(th))/V;
-    end
+	%Equation for drag
+	D = (rho_a/2)*(Vrel_mag^2)*c_D*A_B;  % [N]
+	D = D.*headVec; % drag vector
+	F = F.*headVec; % thrust vector
 
-    %Given an initial horizontal distance x, the change of x with respect to
-    %time:
-    dxdt = V*cos(th);
+	%Given an initial velocity V, the change of V with respect to time is dVdt
+	%below, with m being the mass of the rocket and th being theta
+	%dVdt = (F-D-m_R*g*sin(th))/m_R; %dVdt = m/s^2, V=m/s
 
-    %Given an initial height z, the change of z with respect to time:
-    dzdt = V*sin(th);
-    
+	sumF = F-D+g; % vector of sum of forces [N]
+
+	%derivatives (all vectors [x;y;z];
+	dVdt = sumF/m_R; % [m/s^2]
+
+
+	%Given an initial angle theta, the change of theta with respect to time is:
+	if Vrel_mag < 1 %V == 0 causes an immediately negative trajectory
+		dthdt = 0;
+	else
+		dthdt = (-g(3)*cos(th))/Vrel_mag;
+	end
+
+	%Given an initial horizontal distance x, the change of x with respect to
+	%time:
+	%dxdt = V*cos(th);
+
+	dxdt = V(1);
+	dydt = V(2);
+	dzdt = V(3);
+
+	%Given an initial height z, the change of z with respect to time:
+	%dzdt = V*sin(th);
+	    
 end
 
+
 %% Feed new system back out as a useable array
-%dsdt = [dvdt,dmdt,dthdt,dVdt,dxdt,dzdt]
 dsdt(1) = dvdt;
 dsdt(2) = dm_Rdt;
 dsdt(3) = dm_airdt;
 dsdt(4) = dthdt;
-dsdt(5) = dVdt;
-dsdt(6) = dxdt;
-dsdt(7) = dzdt;
+dsdt(5) = dVdt(1);
+dsdt(6) = dVdt(2);
+dsdt(7) = dVdt(3);
+dsdt(8) = dxdt;
+dsdt(9) = dydt;
+dsdt(10) = dzdt;
 
 dsdt = dsdt';
 end

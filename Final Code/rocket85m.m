@@ -1,4 +1,4 @@
-function rocket85m(t,s,parameters)
+function rocket85m(t,s,state,parameters)
 %BOTTLEROCKET85m  The purpose of this code is to find a combination of 
 %parameters that will allow the rocket to land within 1 m of 85m.
 
@@ -38,6 +38,19 @@ V_0 = s(5);
 x_0 = s(6);
 z_0 = s(7);
 
+
+%% Get state parameters passed into function
+Vx = state(1);  % x-component of velocity [m/s]
+Vy = state(2);  % y-component of velocity [m/s]
+Vz = state(3);  % z-component of velocity [m/s]
+x = state(4);   % x-position [m]
+y = state(5);   % y-position [m]
+z = state(6);   % z-position [m]
+
+
+
+
+
 %% Find a set of parameters that works
 x = 0;
 while x < 84 || x > 86
@@ -58,7 +71,7 @@ parameters(14) = m_air_0;
 
 %Find final distance x
 [~,dsdt] = ode45(@(t,system) rocketTrajectory(t,...
-system,parameters),t,s);
+system,state,parameters),t,s);
 x = max(dsdt(:,6));
 
 while x<84 || x>86
@@ -73,7 +86,7 @@ while x<84 || x>86
         parameters(9) = C_D;
     
         %Find final distance x
-        [~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
+        [~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,...
         parameters),t,s);
         x = max(dsdt(:,6));
     end
@@ -96,7 +109,7 @@ while x<84 || x>86
         s(3) = m_air_0;
         parameters(14) = m_air_0;
         [t,dsdt] = ode45(@(t,system) rocketTrajectory(t,...
-        system,parameters),t,s);
+        system,state,parameters),t,s);
         x = max(dsdt(:,6));
     end
     

@@ -17,34 +17,40 @@ Assumptions: All processes during flight are adiabatic, and all outside
     forces (such as wind) are negligible. Also, that a 2L bottle can
     withstand 130psi, which was a number pulled off a google search.
 
-Created by: 4250df2b7e8b
-Created on: 11/23/16
-Last modified: 12/2/16
+Created by:	Kayla Gehring
+Modified by:	Keith Covington
+Created:	11/23/16
+Modified:	04/04/17
 %}
 %Housekeeping
 clear all;close all;clc;
 
 %Get all parameters for flight (all came from verification data)
-[parameters,system,t] = rocketParameters;
+[parameters,system,state,t] = rocketParameters;
 
 %Calculate flight path using ode45
-[t,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,parameters) ...
-    ,t,system);
+[t,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,parameters) ...
+    ,t,[system state]);
     
+disp(dsdt(:,8));
+disp(dsdt(:,10));
+
     %Graph flight path
     figure(1)
-    plot(dsdt(:,6),dsdt(:,7)); %plot(x,z)
+    plot(dsdt(:,8),dsdt(:,10)); %plot(x,z)
     title('Verification Case - Bottle Rocket Flight')
     xlabel('Horizontal distance (m)')
     ylabel('Vertical height (m)')
-    axis([0,55,0,18])
+    %axis([0,55,0,18])
 
     
- %Find which parameter is most "sensitive" (which changes flight path most)
-rocketSensitivity(t,system,parameters);
+%Find which parameter is most "sensitive" (which changes flight path most)
+rocketSensitivity(t,system,state,parameters);
  
- %Find options to get 85m
- rocket85m(t,system,parameters);
+%Find options to get 85m
+rocket85m(t,system,state,parameters);
    
+% Vary the initial volume of water
+varyVolWater(t,system,state,parameters);
 
-varyVolWater(t,system,parameters);
+

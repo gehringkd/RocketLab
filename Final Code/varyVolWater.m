@@ -1,4 +1,4 @@
-function [] = varyVolWater(t, system, parameters)
+function [] = varyVolWater(t, system, state, parameters)
 %varyVolWater Defines a range of initial volumes of water, calculates the 
 % trajectory for each case, plots the findings, and displays the optimal 
 % initial volume of water.
@@ -56,7 +56,7 @@ for i = 5:length(volume)
 	parameters(15) = vol_air;
 
 	% Solve system
-	[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,...
+	[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,...
 	parameters),t,system);
 
 	% Find max height and distance achieved

@@ -1,4 +1,4 @@
-function [parameters,system,t] = rocketParameters()
+function [parameters,system,state,t] = rocketParameters()
 %BOTTLEROCKETSETPARAMATERS  sends all parameters for a bottle rocket to 
 %bottleRocketmain.m.
 %   To change any parameters, just edit this function.
@@ -25,10 +25,10 @@ function [parameters,system,t] = rocketParameters()
     T_air_i = 300; %K
 
     % --------------------------- Wind ------------------------------
-    V_wind = [0; 0]; % wind velocity components in [x; z] [m/s]
+    %V_wind = [0; 0]; % wind velocity components in [x; z] [m/s]
 
     % For when we have 3D working...
-    %V_wind = [0; 0; 0]; % wind velocity components in [x; y; z] [m/s]
+    V_wind = [0; 0; 0]; % wind velocity components in [x; y; z] [m/s]
     % ---------------------------------------------------------------
     
     %Flight parameters - likely to change
@@ -59,8 +59,10 @@ function [parameters,system,t] = rocketParameters()
     m_R_0 = m_bottle + rho_water*vol_water_i + m_air_0; %kg
     theta_0 = 45; %degrees
         theta_0 = theta_0*pi/180; %radians
-    V_0 = 0; %m/s
+    V_0 = [0; 0; 0]; %m/s
+    V_0 = [0; 0; 0]; %m/s
     x_0 = 0; %m
+    y_0 = 0; %m
     z_0 = 0.1; %m
 
 %% Time range
@@ -69,7 +71,10 @@ function [parameters,system,t] = rocketParameters()
     
 %% Create arrays
 %Put initial system conditions in outgoing array
-    system = [v_0 m_R_0 m_air_0 theta_0 V_0 x_0 z_0];
+    system = [v_0 m_R_0 m_air_0 theta_0];
+
+ %Put initial state conditions in outgoing array
+    state = [V_0(1) V_0(2) V_0(3) x_0 y_0 z_0];
     
 %Put all useful parameters in outgoing array (some were used to calculate
 %other paramters and were not included)
