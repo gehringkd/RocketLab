@@ -26,11 +26,13 @@ Modified:	04/04/17
 clear all;close all;clc;
 
 %Get all parameters for flight (all came from verification data)
-[parameters,system,state,t] = rocketParameters;
+[parameters,system,state,t] = rocketParameters
+
+state = [system state];
 
 %Calculate flight path using ode45
-[t,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,parameters) ...
-    ,t,[system state]);
+[t,dsdt] = ode45(@(t,system) rocketTrajectory(t,state,parameters) ...
+    ,t,state);
 
 % display x- and y- coordinates
 disp([dsdt(:,8) dsdt(:,9) dsdt(:,10) dsdt(:,5:7)]);

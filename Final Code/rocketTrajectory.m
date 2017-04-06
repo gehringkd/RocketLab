@@ -1,4 +1,4 @@
-function [dsdt] = rocketTrajectory(t,s,state,parameters)
+function [dsdt] = rocketTrajectory(t,state,parameters)
 %BOTTLEROCKETTRAJECTORY is a system of equations meant to be solved using
 %ode45 to plot the trajectory of a bottle rocket.
 %{
@@ -44,28 +44,26 @@ m_air_i = parameters(14); %kg, initial mass of air
 v_0 = parameters(15);	%m^3, initial volume of air
 A_t = parameters(16);	%m^2, area of throat
 A_B = parameters(17);	%m^2, area of bottle
-V_wind = parameters(18); % velocity of wind [m/s]
+V_wind = parameters(end); % velocity of wind [m/s]
 
 
 %% Make array s (inputs of rocket system) useable
 
-v = s(1);	% volume of air in tank [m^3]
-m_R = s(2);	% mass of rocket [kg]
-m_air = s(3);	% mass of air in tank [kg]
-th = s(4);	% theta - angle of rocket from trajectory [rad]
-
+v = state(1);	% volume of air in tank [m^3]
+m_R = state(2);	% mass of rocket [kg]
+m_air = state(3);	% mass of air in tank [kg]
+th = state(4);	% theta - angle of rocket from trajectory [rad]
+Vx = state(5);	% x-component of velocity [m/s]
+Vy = state(6);	% y-component of velocity [m/s]
+Vz = state(7);	% z-component of velocity [m/s]
+x = state(8);	% x-position [m]
+y = state(9);	% y-position [m]
+z = state(10);	% z-position [m]
 
 
 %% Get state parameters passed into function
-Vx = state(1);	% x-component of velocity [m/s]
-Vy = state(2);	% y-component of velocity [m/s]
-Vz = state(3);	% z-component of velocity [m/s]
-x = state(4);	% x-position [m]
-y = state(5);	% y-position [m]
-z = state(6);	% z-position [m]
-
 % Define velocity vector and magnitude of velocity
-V = [Vx; Vy; Vz];
+V = [Vx; Vy; Vz]
 
 
 %% Take-off Phase
@@ -89,6 +87,8 @@ We could:
 
 if v < Vol_B
 
+    disp('1st Stage');
+
     %during this phase, mass of the air remains constant, so pressure is
     %changing and can be found as a ratio to volume against intitial values
     p = p_0*((v_0/v)^gamma); %Pa
@@ -98,7 +98,7 @@ if v < Vol_B
     dvdt = c_d*A_t*sqrt((2/rho_w)*(p-p_a)); %dvdt = m^3/s, v = m^3
     
     %The thrust, F, is a function of mass flow: F = m_dot*V_e
-    F = 2*c_d*(p-p_a)*A_t
+    F = 2*c_d*(p-p_a)*A_t;
     
     %and mass is decreasing with time according to:
     %dmdt = -c_d*A_t*sqrt(2*rho_w*(p-p_a)); %dmdt = kg/s, m = kg
@@ -107,16 +107,16 @@ if v < Vol_B
     dm_Rdt = -c_d*A_t*sqrt(2*rho_w*(p-p_a));
     dm_Rdt2 = -c_d*A_t*rho_w*sqrt(2*(p-p_a)/rho_w);
     
-end
 
 
 %% Second Phase - Thrust generation after water is exhausted
 %This phase continues until the difference of air pressure inside the
 %bottle and the air pressure outside the bottle is 0 -> (p-p_a) = 0
 
-if v >= Vol_B
+elseif v >= Vol_B
 
-    
+    disp('2nd Stage');
+
     %p_end is the pressure of the air at the end of phase 1, which is when
     %the volume of the air is equal to the volume of the bottle
     p_end = p_0*(v_0/Vol_B)^gamma;
@@ -199,7 +199,7 @@ After adapting this to the 2D version with wind, we can add in a y-component to 
 	% Displacement of rocket
 	displacement = norm([x y z]);
 
-	Vrel = V - V_wind; % Vrel due to wind [m/s]
+	Vrel = V - V_wind % Vrel due to wind [m/s]
 	Vrel_mag = norm(Vrel); % magnitude of relative velocity [m/s]
 	headVec = Vrel/Vrel_mag; % heading vector (unit vector of Vrel)
 
@@ -214,17 +214,17 @@ After adapting this to the 2D version with wind, we can add in a y-component to 
 
 	%Equation for drag
 	D = (rho_a/2)*(Vrel_mag^2)*c_D*A_B;  % [N]
-	D = D.*headVec; % drag vector
-	F = F.*headVec; % thrust vector
+	D = D.*headVec % drag vector
+	F = F.*headVec % thrust vector
 
 	%Given an initial velocity V, the change of V with respect to time is dVdt
 	%below, with m being the mass of the rocket and th being theta
 	%dVdt = (F-D-m_R*g*sin(th))/m_R; %dVdt = m/s^2, V=m/s
 
-	sumF = F-D+g; % vector of sum of forces [N]
+	sumF = F-D+g % vector of sum of forces [N]
 
 	%derivatives (all vectors [x;y;z];
-	dVdt = sumF/m_R; % [m/s^2]
+	dVdt = sumF./m_R % [m/s^2]
 
 
 	%Given an initial angle theta, the change of theta with respect to time is:
