@@ -196,16 +196,18 @@ g = [0; -9.81]
 After adapting this to the 2D version with wind, we can add in a y-component to the vectors to make it 3D.
 %}
 
+	% Displacement of rocket
+	displacement = norm([x y z]);
 
 	Vrel = V - V_wind; % Vrel due to wind [m/s]
 	Vrel_mag = norm(Vrel); % magnitude of relative velocity [m/s]
 	headVec = Vrel/Vrel_mag; % heading vector (unit vector of Vrel)
 
-	if z >= 1
+	if displacement >= 1
 		g = [0; 0; -9.81]; % g into vector form
-		headVec = [sqrt(2); 0; sqrt(2)];
-	elseif z < 1
+	elseif displacement < 1
 		g = [0; 0; 0]
+		headVec = [sqrt(2); 0; sqrt(2)]
 	else
 		disp('Wuuuuuut');
 	end
@@ -226,16 +228,17 @@ After adapting this to the 2D version with wind, we can add in a y-component to 
 
 
 	%Given an initial angle theta, the change of theta with respect to time is:
-	if Vrel_mag < 1 %V == 0 causes an immediately negative trajectory
-		dthdt = 0;
-	else
-		dthdt = (-g(3)*cos(th))/Vrel_mag;
-	end
+	%if Vrel_mag < 1 %V == 0 causes an immediately negative trajectory
+	%	dthdt = 0;
+	%else
+	%	dthdt = (-g(3)*cos(th))/Vrel_mag;
+	%end
 
 	%Given an initial horizontal distance x, the change of x with respect to
 	%time:
 	%dxdt = V*cos(th);
 
+	% Components of velocity vector
 	dxdt = V(1);
 	dydt = V(2);
 	dzdt = V(3);
@@ -250,7 +253,7 @@ end
 dsdt(1) = dvdt;
 dsdt(2) = dm_Rdt;
 dsdt(3) = dm_airdt;
-dsdt(4) = dthdt;
+%dsdt(4) = dthdt;
 dsdt(5) = dVdt(1);
 dsdt(6) = dVdt(2);
 dsdt(7) = dVdt(3);

@@ -31,26 +31,26 @@ clear all;close all;clc;
 %Calculate flight path using ode45
 [t,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,parameters) ...
     ,t,[system state]);
-    
-disp(dsdt(:,8));
-disp(dsdt(:,10));
 
-    %Graph flight path
-    figure(1)
-    plot(dsdt(:,8),dsdt(:,10)); %plot(x,z)
-    title('Verification Case - Bottle Rocket Flight')
-    xlabel('Horizontal distance (m)')
-    ylabel('Vertical height (m)')
-    %axis([0,55,0,18])
+% display x- and y- coordinates
+disp([dsdt(:,8) dsdt(:,9) dsdt(:,10)]);
+
+%Graph flight path
+figure(1)
+plot(dsdt(:,8),dsdt(:,10)); %plot(x,z)
+title('Verification Case - Bottle Rocket Flight')
+xlabel('Horizontal distance (m)')
+ylabel('Vertical height (m)')
+%axis([0,55,0,18])
 
     
 %Find which parameter is most "sensitive" (which changes flight path most)
-rocketSensitivity(t,system,state,parameters);
+%rocketSensitivity(t,system,state,parameters);
  
 %Find options to get 85m
-rocket85m(t,system,state,parameters);
+%rocket85m(t,system,state,parameters);
    
 % Vary the initial volume of water
-varyVolWater(t,system,state,parameters);
+%varyVolWater(t,system,state,parameters);
 
 
