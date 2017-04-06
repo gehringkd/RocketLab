@@ -98,7 +98,7 @@ if v < Vol_B
     dvdt = c_d*A_t*sqrt((2/rho_w)*(p-p_a)); %dvdt = m^3/s, v = m^3
     
     %The thrust, F, is a function of mass flow: F = m_dot*V_e
-    F = 2*c_d*(p-p_a)*A_t;
+    F = 2*c_d*(p-p_a)*A_t
     
     %and mass is decreasing with time according to:
     %dmdt = -c_d*A_t*sqrt(2*rho_w*(p-p_a)); %dmdt = kg/s, m = kg
@@ -206,8 +206,8 @@ After adapting this to the 2D version with wind, we can add in a y-component to 
 	if displacement >= 1
 		g = [0; 0; -9.81]; % g into vector form
 	elseif displacement < 1
-		g = [0; 0; 0]
-		headVec = [sqrt(2); 0; sqrt(2)]
+		g = [0; 0; 0];
+		headVec = [sqrt(2); 0; sqrt(2)];
 	else
 		disp('Wuuuuuut');
 	end

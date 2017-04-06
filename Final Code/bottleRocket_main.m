@@ -33,7 +33,7 @@ clear all;close all;clc;
     ,t,[system state]);
 
 % display x- and y- coordinates
-disp([dsdt(:,8) dsdt(:,9) dsdt(:,10)]);
+disp([dsdt(:,8) dsdt(:,9) dsdt(:,10) dsdt(:,5:7)]);
 
 %Graph flight path
 figure(1)
