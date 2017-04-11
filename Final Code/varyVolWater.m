@@ -1,4 +1,4 @@
-function [] = varyVolWater(t, state, parameters)
+function [] = varyVolWater(t, system, state, parameters)
 %varyVolWater Defines a range of initial volumes of water, calculates the 
 % trajectory for each case, plots the findings, and displays the optimal 
 % initial volume of water.
@@ -7,14 +7,14 @@ The purpose of this program is to find the optimal initial volume of water
 to achieve the maximum distance.
 
 Inputs:	t	- time
-	state	- system parameters
+	system	- system parameters
 	parameters - environmental parameters
 
 Outputs: ------------------------------------
 
 Created by:	Keith Covington
 Created on:	03/21/2017
-Last modified:	04/08/2017
+Last modified:	03/21/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -46,9 +46,9 @@ for i = 5:length(volume)
 	vol_air = vol_bottle - volume(i);
 	m_air_0 = (p_0/R/T_air_i)*(vol_air); %kg
 	m_R_0 = m_bottle + rho_water*vol_water_i + m_air_0; %kg
-	state(1) = vol_air;
-	state(2) = m_R_0;
-	state(3) = m_air_0;
+	system(1) = vol_air;
+	system(2) = m_R_0;
+	system(3) = m_air_0;
 
 	% Change initial values in 'parameters' vector
 	parameters(12) = volume(i);
@@ -56,8 +56,8 @@ for i = 5:length(volume)
 	parameters(15) = vol_air;
 
 	% Solve system
-	[~,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,...
-	parameters),t,state);
+	[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,...
+	parameters),t,system);
 
 	% Find max height and distance achieved
 	x(i) = max(dsdt(:,6));

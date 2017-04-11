@@ -33,7 +33,7 @@ function [parameters,system,state,t] = rocketParameters()
     
     %Flight parameters - likely to change
     C_d = 0.8; %discharge coefficient
-    C_D = 0.5; %drag coefficient
+    C_D = 0.4; %drag coefficient
     p_gage = 50; %psi, initial gage pressure
         p_gage = p_gage*6895; %Pa
         p_0 = p_ambient + p_gage; %Pa
@@ -59,18 +59,19 @@ function [parameters,system,state,t] = rocketParameters()
     m_R_0 = m_bottle + rho_water*vol_water_i + m_air_0; %kg
     theta_0 = 45; %degrees
         theta_0 = theta_0*pi/180; %radians
-    V_0 = [0.001; 0; 0.001]; %m/s
+    V_0 = [0; 0; 0]; %m/s
+    V_0 = [0; 0; 0]; %m/s
     x_0 = 0; %m
     y_0 = 0; %m
     z_0 = 0.1; %m
 
 %% Time range
     ti = 0;
-    tf = 5;
+    tf = 7;
     
 %% Create arrays
 %Put initial system conditions in outgoing array
-    system = [v_0 m_R_0 m_air_0 theta_0];
+    system = [v_0 m_R_0 m_air_0];
 
  %Put initial state conditions in outgoing array
     state = [V_0(1) V_0(2) V_0(3) x_0 y_0 z_0];
