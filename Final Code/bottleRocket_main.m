@@ -26,33 +26,39 @@ Modified:	04/04/17
 clear all;close all;clc;
 
 %Get all parameters for flight (all came from verification data)
-[parameters,system,state,t] = rocketParameters
+[parameters,system,state,t] = rocketParameters();
 
 state = [system state];
 
 %Calculate flight path using ode45
-[t,dsdt] = ode45(@(t,system) rocketTrajectory(t,state,parameters) ...
-    ,t,state);
+opts = odeset('Events', @stopping_point);
+[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters) ...
+    ,t,state,opts);
 
 % display x- and y- coordinates
-disp([dsdt(:,8) dsdt(:,9) dsdt(:,10) dsdt(:,5:7)]);
+%disp([dsdt(:,8) dsdt(:,9) dsdt(:,10) dsdt(:,5:7)]);
+disp([dsdt(:,8) dsdt(:,9) dsdt(:,10)]);
+
 
 %Graph flight path
-figure(1)
+figure
 plot(dsdt(:,8),dsdt(:,10)); %plot(x,z)
 title('Verification Case - Bottle Rocket Flight')
 xlabel('Horizontal distance (m)')
 ylabel('Vertical height (m)')
 %axis([0,55,0,18])
 
-    
+figure
+plot(t,dsdt(:,10)); %plot(t,z)
+
+
 %Find which parameter is most "sensitive" (which changes flight path most)
 %rocketSensitivity(t,system,state,parameters);
  
 %Find options to get 85m
-%rocket85m(t,system,state,parameters);
+%rocket85m(t,state,parameters);
    
 % Vary the initial volume of water
-%varyVolWater(t,system,state,parameters);
+%varyVolWater(t,state,parameters);
 
 

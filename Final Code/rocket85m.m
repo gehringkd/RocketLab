@@ -1,4 +1,4 @@
-function rocket85m(t,s,state,parameters)
+function rocket85m(t,state,parameters)
 %BOTTLEROCKET85m  The purpose of this code is to find a combination of 
 %parameters that will allow the rocket to land within 1 m of 85m.
 
@@ -28,26 +28,20 @@ m_bottle = parameters(19);
 
 t = [0 8];
 
-s = s';
-
-v_0 = s(1);
-m_R_0 = s(2);
-m_air_0 = s(3);
-th_0 = s(4);
-V_0 = s(5);
-x_0 = s(6);
-z_0 = s(7);
-
-
 %% Get state parameters passed into function
-Vx = state(1);  % x-component of velocity [m/s]
-Vy = state(2);  % y-component of velocity [m/s]
-Vz = state(3);  % z-component of velocity [m/s]
-x = state(4);   % x-position [m]
-y = state(5);   % y-position [m]
-z = state(6);   % z-position [m]
-
-
+v_0 = state(1);
+m_R_0 = state(2);
+m_air_0 = state(3);
+%th_0 = state(4);
+V_0 = state(5);
+x_0 = state(6);
+z_0 = state(7);
+Vx = state(5);  % x-component of velocity [m/s]
+Vy = state(6);  % y-component of velocity [m/s]
+Vz = state(7);  % z-component of velocity [m/s]
+x = state(8);   % x-position [m]
+y = state(9);   % y-position [m]
+z = state(10);   % z-position [m]
 
 
 
@@ -65,13 +59,13 @@ p_0 = 1.8*p_0;
 parameters(11) = p_0;
     m_air_0 = (p_0/R/T_air_i)*v_0; %kg
     m_R_0 = m_bottle + rho_water*vol_water_i + m_air_0; %kg
-s(2) = m_R_0;
-s(3) = m_air_0;
+state(2) = m_R_0;
+state(3) = m_air_0;
 parameters(14) = m_air_0;
 
 %Find final distance x
-[~,dsdt] = ode45(@(t,system) rocketTrajectory(t,...
-system,state,parameters),t,s);
+[~,dsdt] = ode45(@(t,state) rocketTrajectory(t,...
+state,parameters),t,state);
 x = max(dsdt(:,6));
 
 while x<84 || x>86
@@ -86,8 +80,8 @@ while x<84 || x>86
         parameters(9) = C_D;
     
         %Find final distance x
-        [~,dsdt] = ode45(@(t,system) rocketTrajectory(t,system,state,...
-        parameters),t,s);
+        [~,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,...
+        parameters),t,state);
         x = max(dsdt(:,6));
     end
     
@@ -102,14 +96,14 @@ while x<84 || x>86
         
         %Change parameter and system arrays
         parameters(15) = v_0;
-        s(1) = v_0;
+        state(1) = v_0;
         m_air_0 = (p_0/R/T_air_i)*v_0; %kg
         m_R_0 = m_bottle + rho_water*vol_water_i + m_air_0; %kg
-        s(2) = m_R_0;
-        s(3) = m_air_0;
+        state(2) = m_R_0;
+        state(3) = m_air_0;
         parameters(14) = m_air_0;
-        [t,dsdt] = ode45(@(t,system) rocketTrajectory(t,...
-        system,state,parameters),t,s);
+        [t,dsdt] = ode45(@(t,state) rocketTrajectory(t,...
+        state,parameters),t,state);
         x = max(dsdt(:,6));
     end
     
