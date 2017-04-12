@@ -22,38 +22,50 @@ Modified by:	Keith Covington
 Created:	11/23/16
 Modified:	04/12/17
 %}
+
 %Housekeeping
 clear all;close all;clc;
 
-%Get all parameters for flight (all came from verification data)
+% Get all parameters for flight (all came from verification data)
 [parameters,system,state,t] = rocketParameters;
+state = [system state]; % initial state of rocket
+opts = odeset('Events',@stopping_point); % define event to stop ode45
 
-state = [system state];
 
-%Get wind vector
-windvector = wind;
+%% Flight Path Verification
 
+% Trajectory with wind
+windvector = wind; %Get wind vector
 %Calculate flight path using ode45
-
 [t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector) ...
-    ,t,state);
+    ,t,state,opts);
+fig1 = figure;
+hold on
+plotTrajectory(fig1,t,dsdt);
 
-%Graph flight path
-figure(1)
-plot3(dsdt(:,7),dsdt(:,8),dsdt(:,9)); %plot(x,y,z)
-title('Verification Case - Bottle Rocket Flight')
-xlabel('Downrange distance (m)')
-ylabel('Crossrange distance (m)')
-zlabel('Vertical height (m)')
+% With no wind (for comparison)
+windvector = [0; 0; 0];
+%Calculate flight path using ode45
+[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector) ...
+    ,t,state,opts);
 
-    
+plotTrajectory(fig1,t,dsdt);
+legend('With wind','No wind consideration')
+
+
+
+%% Sensitivity Analysis
+
+% Vary the initial volume of water
+varyVolWater(t,state,parameters,windvector);
+
 %Find which parameter is most "sensitive" (which changes flight path most)
 %rocketSensitivity(t,system,state,parameters);
- 
+
+
+
+%% Other Stuff
 %Find options to get 85m
 %rocket85m(t,system,state,parameters);
    
-% Vary the initial volume of water
-%varyVolWater(t,system,state,parameters);
-
 
