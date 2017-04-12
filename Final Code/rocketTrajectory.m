@@ -86,8 +86,6 @@ We could:
 
 if v < Vol_B
 
-    disp('1st Stage');
-
     %during this phase, mass of the air remains constant, so pressure is
     %changing and can be found as a ratio to volume against intitial values
     p = p_0*((v_0/v)^gamma); %Pa
@@ -113,8 +111,6 @@ if v < Vol_B
 %bottle and the air pressure outside the bottle is 0 -> (p-p_a) = 0
 
 elseif v >= Vol_B
-
-    disp('2nd Stage');
 
     %p_end is the pressure of the air at the end of phase 1, which is when
     %the volume of the air is equal to the volume of the bottle

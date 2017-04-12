@@ -20,7 +20,7 @@ Assumptions: All processes during flight are adiabatic, and all outside
 Created by:	Kayla Gehring
 Modified by:	Keith Covington
 Created:	11/23/16
-Modified:	04/04/17
+Modified:	04/12/17
 %}
 %Housekeeping
 clear all;close all;clc;
@@ -34,15 +34,17 @@ state = [system state];
 windvector = wind;
 
 %Calculate flight path using ode45
+
 [t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector) ...
     ,t,state);
 
 %Graph flight path
 figure(1)
-plot(dsdt(:,7),dsdt(:,9)); %plot(x,z)
+plot3(dsdt(:,7),dsdt(:,8),dsdt(:,9)); %plot(x,y,z)
 title('Verification Case - Bottle Rocket Flight')
-xlabel('Horizontal distance (m)')
-ylabel('Vertical height (m)')
+xlabel('Downrange distance (m)')
+ylabel('Crossrange distance (m)')
+zlabel('Vertical height (m)')
 
     
 %Find which parameter is most "sensitive" (which changes flight path most)
