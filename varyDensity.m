@@ -14,7 +14,7 @@ Outputs: ------------------------------------
 
 Created by:     Keith Covington
 Created on:     03/21/2017
-Last modified:  04/12/2017 by Kayla Gehring
+Last modified:  04/13/2017 by Kayla Gehring
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -68,6 +68,13 @@ scatter(rho_water, x)
 title('Variation of Liquid Density')
 xlabel('Liquid Density (kg/m^3)')
 ylabel('Distance Achieved (m)')
+
+% Find and plot line of best fit
+coefs = polyfit(rho_water, x, 2);
+xFit = linspace(min(rho_water), max(rho_water), 1000);
+yFit = polyval(coefs, xFit);
+plot(xFit, yFit)
+
 
 % Find optimal initial volume of water and display to command window
 optVol = rho_water(x == max(x)); 

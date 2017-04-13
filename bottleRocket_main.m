@@ -41,12 +41,15 @@ windvector = wind;
 %Graph flight path
 figure(1)
 plot3(dsdt(:,7),dsdt(:,8),dsdt(:,9)); %plot(x,y,z)
+grid on
+axis equal
+ylim([-10 10]);
 title('Verification Case - Bottle Rocket Flight')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
+   
 
-    
 %Sensitivity Analysis
 varyVolWater(t, state, parameters);
 varyDragCoeff(t, state, parameters);

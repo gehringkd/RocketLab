@@ -14,7 +14,7 @@ Outputs: ------------------------------------
 
 Created by:	Keith Covington
 Created on:	03/21/2017
-Last modified:	03/21/2017
+Last modified:	04/13/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -84,6 +84,12 @@ scatter(volume, x)
 title('Variation of Initial Volume of Water')
 xlabel('Inital Volume of Water (liters)')
 ylabel('Distance Achieved (m)')
+
+% Find and plot line of best fit
+coefs = polyfit(volume, x, 7);
+xFit = linspace(min(volume), max(volume), 1000);
+yFit = polyval(coefs, xFit);
+plot(xFit, yFit)
 
 % Find optimal initial volume of water and display to command window
 optVol = volume(x == max(x)); 

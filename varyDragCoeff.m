@@ -14,7 +14,7 @@ Outputs: ------------------------------------
 
 Created by:	Kayla Gehring (modified from Keith Covington's varyVolWater.m)
 Created on:	4/12/2017
-Last modified:	04/12/2017
+Last modified:	04/13/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -65,6 +65,12 @@ scatter(drag, x)
 title('Variation of Drag Coefficient')
 xlabel('C_D')
 ylabel('Distance Achieved (m)')
+
+% Find and plot line of best fit
+coefs = polyfit(drag, x, 4);
+xFit = linspace(min(drag), max(drag), 1000);
+yFit = polyval(coefs, xFit);
+plot(xFit, yFit)
 
 % Find optimal initial volume of water and display to command window
 optVol = drag(x == max(x)); 
