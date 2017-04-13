@@ -30,12 +30,15 @@ clear all;close all;clc;
 
 state = [system state];
 
+%Get drag coefficient
+drag_data = importfile('TA_Baseline_2pm.csv');
+Drag_v_Vel = calcDrag(drag_data
 %Get wind vector
 windvector = wind;
 
 %Calculate flight path using ode45
 
-[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector) ...
+[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
     ,t,state);
 
 %Graph flight path
@@ -48,11 +51,11 @@ zlabel('Vertical height (m)')
 
     
 %Sensitivity Analysis
-varyVolWater(t, state, parameters, angle);
+varyVolWater(t, state, parameters);
 varyDragCoeff(t, state, parameters);
 varyDensity(t, state, parameters);
 varyPressure(t, state, parameters);
-%varyAngle(t, state, parameters);
+varyAngle(t, state, parameters);
 
 
 

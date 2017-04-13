@@ -1,0 +1,47 @@
+function [ coeff_vs_aoa ] = calcDrag( origin, S, C, a )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+
+%%
+data = csvimport(origin);
+%% Extract/name variables
+dyn_p = data(:,1);
+AoA = data(:,2)*pi/180; %radians
+N = data(:,3);
+A = data(:,4);
+
+%% Calculate L and D
+D = N.*sin(AoA) + A.*cos(AoA);
+
+%% Calculate the coefficient
+C_D = D./dyn_p/S;
+
+%% Calculate Error in C_L, C_D, PMcg, and C_M
+% Calculate error in dynamic pressure
+% Find the size of the vector for the deviation formula
+[dpc, dpr] = size(dyn_p);
+[PMc, PMr] = size(PMcg);
+sigmadyn_p = sqrt(1/(dpc-1)*sum((dyn_p-mean(dyn_p)).^2));
+sigmaPMcg = sqrt(1/(PMc-1)*sum((PMcg-mean(PMcg)).^2));
+
+% Calculate error in C_L and C_D
+errC_L = mean(C_L).*sqrt( (sigmadyn_p/mean(dyn_p)).^2 + (sigmaL/mean(L)).^2 ); 
+errC_D = mean(C_D).*sqrt( (sigmadyn_p/mean(dyn_p)).^2 + (sigmaD/mean(D)).^2 );
+
+% Assume PMcg is measured and doesn't need error propagation lol ;) 
+% Calculate C_M
+errC_M = mean(C_M).*sqrt( (sigmadyn_p/mean(dyn_p)).^2 + (sigmaPMcg/mean(PMcg)).^2 );
+
+% Get means of the coefficients now that std. dev. done
+C_L = mean(C_L);
+C_D = mean(C_D);
+C_M = mean(C_M);
+AoA = round(mean(data(:,2)));
+
+%Pass into coeff_vs_aoa
+coeff_vs_aoa =  [coeff_vs_aoa; C_L, C_D, C_M, AoA, errC_L, errC_D, errC_M];
+end
+
+end
+
