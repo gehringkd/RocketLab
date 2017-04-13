@@ -49,8 +49,10 @@ switch direction
     case 'nnw'
         angle = -127.5;
     otherwise
-        warning('Not a acceptable wind direction')
+        warning('Not an acceptable wind direction')
 end
+%correct error in above angles
+angle = angle + 180;
 
 %create vector for wind
 windVector(1) = windSpeed*cosd(angle);
