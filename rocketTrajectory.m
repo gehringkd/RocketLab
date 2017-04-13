@@ -33,7 +33,7 @@ Modified:	04/04/17
 g = parameters(1);	%m/s^2
 gamma = parameters(2);	%specific heat ratio of air
 rho_w = parameters(3);	%kg/m^3, density of water
-R = parameters(4);	%kg/m^3, density of water; % J/kg/K
+R = parameters(4);      % J/kg/K
 rho_a = parameters(5);	%kg/m^3, density of ambient air
 p_a = parameters(6);	%Pa
 c_d = parameters(8);	%discharge coefficient
