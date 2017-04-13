@@ -82,6 +82,12 @@ title('Variation of Initial Air Pressure')
 xlabel('Inital Air Pressure (psi)')
 ylabel('Distance Achieved (m)')
 
+% Find and plot line of best fit
+coefs = polyfit(pressure/6895, x, 3);
+xFit = linspace(min(pressure/6895), max(pressure/6895), 1000);
+yFit = polyval(coefs, xFit);
+plot(xFit, yFit)
+
 % Find optimal initial volume of water and display to command window
 optVol = pressure(x == max(x)); 
 disp(['The optimal initial air pressure is ' num2str(optVol) ...

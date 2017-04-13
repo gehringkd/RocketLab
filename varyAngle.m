@@ -33,7 +33,7 @@ windVector = [0;0;0];
 %% Vary initial volume of water to find optimum volume
 
 % Range of launch angles to test
-angle = linspace(35, 55, 100);
+angle = linspace(25, 55, 100);
 
 w = waitbar(0,'Varying launch angle...'); % progress bar
 
@@ -68,6 +68,13 @@ scatter(angle, x)
 title('Variation of Launch Angle')
 xlabel('Launch Angle (degrees)')
 ylabel('Distance Achieved (m)')
+
+% Find and plot line of best fit
+coefs = polyfit(angle, x, 4);
+xFit = linspace(min(angle), max(angle), 1000);
+yFit = polyval(coefs, xFit);
+plot(xFit, yFit)
+
 
 % Find optimal initial volume of water and display to command window
 optVol = angle(x == max(x)); 
