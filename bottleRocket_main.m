@@ -48,7 +48,9 @@ zlabel('Vertical height (m)')
 
     
 %Sensitivity Analysis
- 
+varyVolWater(t, state, parameters);
+varyDragCoeff(t, state, parameters);
+
 %Find options to get 85m
 %rocket85m(t,system,state,parameters);
    

@@ -12,21 +12,21 @@ Inputs:	t	- time
 
 Outputs: ------------------------------------
 
-Created by:	Keith Covington
-Created on:	03/21/2017
-Last modified:	03/21/2017
+Created by:	Kayla Gehring (modified from Keith Covington's varyVolWater.m)
+Created on:	4/12/2017
+Last modified:	04/12/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %% Extract necessary parameters and system
 C_D = parameters(9);
-windvector = [0 0 0]; %wind not needed for sensitivity analysis
+windvector = [0; 0; 0]; %wind not needed for sensitivity analysis
 
 %% Vary initial value of drag coefficient to find optimum volume
 
 % Range of volumes to test
-drag = linspace(0.05, .6, 1000);
+drag = linspace(0.25, 0.7, 500);
 
 w = waitbar(0,'Varying drag coefficient...'); % progress bar
 
@@ -44,17 +44,19 @@ for i = 1:length(drag)
 	parameters, windvector),t,state);
 
 	% Find max height and distance achieved
-	x(i) = max((dsdt(:,6));
-	z(i) = max(dsdt(:,7));
+	x(i) = max(dsdt(:,7));
+	z(i) = max(dsdt(:,9));
 
 	waitbar(i/length(drag)); % update progress bar
 end
 close(w); % close progress bar
 
 % Remove outliers
-drag(x >= 3*std(x)) = [];
-z(x >= 3*std(x)) = [];
-x(x >= 3*std(x)) = [];
+% removing the outliers is causing x to be empty, I don't think statistical 
+%outliers work well when you're measuring this kind of thing
+%drag(x >= 3*std(x)) = [];
+%z(x >= 3*std(x)) = [];
+%x(x >= 3*std(x)) = [];
 
 % Plot various volumes and their respective achieved distance
 figure
@@ -66,7 +68,7 @@ ylabel('Distance Achieved (m)')
 
 % Find optimal initial volume of water and display to command window
 optVol = drag(x == max(x)); 
-disp(['The optimal initial volume of water is ' num2str(optVol) ...
-	' liters.'])
+disp(['The optimal drag coefficient is ' num2str(optVol) ...
+	'.'])
 
 end
