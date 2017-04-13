@@ -41,7 +41,7 @@ for i = 1:length(drag)
 
 	% Solve system
 	[~,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,...
-	parameters, windvector),t,state);
+	parameters, windvector, 45),t,state);
 
 	% Find max height and distance achieved
 	x(i) = max(dsdt(:,7));

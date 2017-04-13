@@ -35,7 +35,7 @@ windvector = wind;
 
 %Calculate flight path using ode45
 
-[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
+[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector) ...
     ,t,state);
 
 %Graph flight path
@@ -48,11 +48,11 @@ zlabel('Vertical height (m)')
 
     
 %Sensitivity Analysis
-varyVolWater(t, state, parameters);
+varyVolWater(t, state, parameters, angle);
 varyDragCoeff(t, state, parameters);
 varyDensity(t, state, parameters);
 varyPressure(t, state, parameters);
-varyAngle(t, state, parameters);
+%varyAngle(t, state, parameters);
 
 
 

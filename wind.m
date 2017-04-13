@@ -4,6 +4,11 @@ function [windVector] = wind
 
 %get inputs
 mph = input('Enter a windspeed (mph): ');
+
+if (mph == 0)
+    windVector = [0; 0; 0];
+else
+    
 direction = input('Enter a direction (lowercase): ','s');
 
 %convert to m/s
@@ -52,4 +57,5 @@ windVector(1) = windSpeed*cosd(angle);
 windVector(2) = windSpeed*sind(angle);
 windVector(3) = 0;  %Z is always zero
 windVector = windVector.';
+end
 

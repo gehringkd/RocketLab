@@ -1,4 +1,4 @@
-function [dsdt] = rocketTrajectory(t,state,parameters,wind)
+function [dsdt] = rocketTrajectory(t,state,parameters,wind,angle)
 %BOTTLEROCKETTRAJECTORY is a system of equations meant to be solved using
 %ode45 to plot the trajectory of a bottle rocket.
 %{
@@ -45,6 +45,7 @@ v_0 = parameters(15);	%m^3, initial volume of air
 A_t = parameters(16);	%m^2, area of throat
 A_B = parameters(17);	%m^2, area of bottle
 V_wind = wind; % velocity of wind [m/s]
+angle = angle*pi/180; %angle of launcher
 
 
 %% Make array s (inputs of rocket system) useable
@@ -202,7 +203,7 @@ After adapting this to the 2D version with wind, we can add in a y-component to 
 		g = [0; 0; -9.81]; % g into vector form
 	elseif displacement < 1
 		g = [0; 0; 0];
-		headVec = [sqrt(2); 0; sqrt(2)];
+		headVec = [cos(angle); 0; sin(angle)];
 	else
 		disp('Wuuuuuut');
 	end
