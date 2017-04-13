@@ -33,7 +33,7 @@ windvector = [0; 0; 0];
 %% Vary initial volume of water to find optimum volume
 
 % Range of volumes to test
-volume = linspace(0.05*vol_bottle, 0.5*vol_bottle, 100);
+volume = linspace(0.1*vol_bottle, 0.5*vol_bottle, 500);
 
 w = waitbar(0,'Varying initial water volume...'); % progress bar
 
@@ -41,7 +41,7 @@ x = zeros(1, length(volume));
 z = zeros(1, length(volume));
 
 % Loop through different initial volumes of water
-for i = 1:length(volume)
+for i = 5:length(volume)
 
 	% Change initial values in 'system' vector
 	vol_air = vol_bottle - volume(i);
@@ -71,7 +71,7 @@ close(w); % close progress bar
 volume = 1000.*volume; % convert water volume from [m^3] to [liters]
 
 % Remove outliers
-%a = [0 diff(x)];
+a% = [0 diff(x)];
 %b = std(a)*ones(1,length(x));
 %volume(a >= 3*b) = [];
 %z(a >= 3*b) = [];

@@ -52,10 +52,10 @@ zlabel('Vertical height (m)')
 
 %Sensitivity Analysis
 varyVolWater(t, state, parameters);
-varyDragCoeff(t, state, parameters);
+%varyDragCoeff(t, state, parameters);
 varyDensity(t, state, parameters);
-varyPressure(t, state, parameters);
-varyAngle(t, state, parameters);
+%varyPressure(t, state, parameters);
+%varyAngle(t, state, parameters);
 
 
 

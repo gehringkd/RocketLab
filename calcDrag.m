@@ -1,10 +1,10 @@
-function [ Drag_vs_Vel ] = calcDrag( origin, S)
+function [ Drag ] = calcDrag( data, S)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
-data = csvimport(origin);
+
 %% Extract/name variables
-dyn_p = data(:,1);
-V = data(:,2);
+V = data(:,1);
+dyn_p = data(:,2);
 AoA = data(:,3)*pi/180; %radians
 N = data(:,4);
 A = data(:,5);
@@ -16,7 +16,7 @@ D = N.*sin(AoA) + A.*cos(AoA);
 C_D = D./dyn_p/S;
 
 %% Pass into D_vs_Aoa
-Drag_vs_Vel =  [C_D, V];
+Drag = mean(C_D);
 
 end
 

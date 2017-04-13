@@ -1,4 +1,4 @@
-function [dataArray] = importfile(dataArray)
+function [dataOther] = importfile(dataArray)
 %IMPORTFILE Import numeric data from an excel file as column vectors.
 %Subtract the 0 m/s data from 25 m/s data.
 %
@@ -34,8 +34,10 @@ end
 
 
 %Separate zero velocity
-dataArray0 = dataArray(1, :);
-dataArray = dataArray(2:end, :) - dataArray0;
+data0 = averaged_data(1, :);
+for i=2:size(averaged_data,2)
+    dataOther(i-1,:) = averaged_data(i, :) - data0;
+end
         
 %Close file
 fclose('all');
