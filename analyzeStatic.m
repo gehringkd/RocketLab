@@ -1,4 +1,4 @@
-function [thrust] = analyzeStatic(file)
+function [stats, time, thrust] = analyzeStatic(file)
 %analyzeStatic reads in and analyzes a file from static test stand tests.
 %{
 The purpose of this function is to analyze a single test stand file.
@@ -38,18 +38,16 @@ thrust = flip(thrust);		% flip thrust vector back
 
 % Trim it
 thrust = thrust(startInd:endInd);
+time = time(startInd:endInd);
 
+%% Find Peak, Avg, and standard deviation of thrust values
+stats = [max(thrust), mean(thrust), std(thrust)]; 
 
-%% Calculate total impulse
-% Total impulse will be the area under the thrust curve
+%% Calculate specific Impulse
+% moved this to a separate function, but haven't done much with it yet
 
-% Account for recovery of dynamic load cell
-
-
-% Integrate to find total impulse
-
-
-
+%mass = 1 L * 1000 kg/L^3 or something
+Isp = calcImpulse(thrust, time, mass);
 
 %% Return statement
 

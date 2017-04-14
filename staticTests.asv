@@ -27,9 +27,9 @@ files = cell(numFiles, 1);		% cell array for filenames
 thrust = cell(numFiles, 1);		% cell array for thrust data
 
 % Create data table for peak Thrust, Isp, and total time of each data set
-thrust = zeros(3, length(direc)); %for Results, Q3
+maxT = zeros(1, length(direc)); %for Results, Q3
 Isp = zeros(1, length(direc)); %for Results, Q2
-timeT = zeros(1, length(direc)); %for Results, Q4
+timeT = zeros(1, length(direc)); %for Results, Q
 
 % Try plotting
 figure
@@ -47,9 +47,6 @@ for i = 1:numFiles
 
 	% Analyze files
 	%try
-        %note from Kayla: analyze Static should return Peak, Avg, and
-        %standard deviation of thrust for each data set. You can graph them
-        %all if you'd like, but I think we need only one graph.
 		thrust{i} = analyzeStatic(files{i});	% analyize file
 	%catch
 		%disp(['Could not read file: ' files{i} '. Skipping...']);

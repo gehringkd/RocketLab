@@ -63,5 +63,3 @@ Isp = getIsp(thrust,t, mass);
 
 %Std. Err. of the Mean and Confidence Interval Analysis - Isp
 CI = DataAnalyis(Isp);
-
-(Isp, CI);
