@@ -58,4 +58,10 @@ varyDensity(t, state, parameters);
 
 % Analyze static test stand data
 [t, thrust] = staticTests();
+mass = parameters(11)*parameters(3); %initial volume propellant*density 
+Isp = getIsp(thrust,t, mass);
 
+%Std. Err. of the Mean and Confidence Interval Analysis - Isp
+CI = DataAnalyis(Isp);
+
+(Isp, CI);
