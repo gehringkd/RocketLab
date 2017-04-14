@@ -12,9 +12,11 @@ Outputs: t	- time vector
 
 Created by:     Keith Covington
 Created on:     04/13/2017
-Last modified:  04/13/2017
+Last modified:  04/14/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+clear all;close all;clc;
 
 % Get names of files to analyze
 addpath('Static Test Stand Data');
@@ -22,10 +24,13 @@ addpath('Static Test Stand Data');
 direc = dir('Static Test Stand Data/G*');	% get directory where files are
 numFiles = length(direc);		% number of files
 files = cell(numFiles, 1);		% cell array for filenames
+thrust = cell(numFiles, 1);		% cell array for thrust data
 
+% Try plotting
+figure
+hold on
 
 w = waitbar(0,'Analyzing static test stand data...'); % progress bar
-
 % Loop though files
 for i = 1:numFiles
 	files{i} = direc(i).name;
@@ -36,25 +41,17 @@ for i = 1:numFiles
 	end
 
 	% Analyze files
-	try
-		thrust(:,1,i) = analyzeStatic(files{i});	% analyize file
-	catch
-		disp(['Could not read file: ' files{i} '. Skipping...']);
-	end
+	%try
+		thrust{i} = analyzeStatic(files{i});	% analyize file
+	%catch
+		%disp(['Could not read file: ' files{i} '. Skipping...']);
+	%end
 
+	plot(thrust{i})
 	waitbar(i/numFiles); % update progress bar
 end
 
 close(w); % close progress bar
-
-% Try plotting
-figure
-hold on
-plot(thrust(:,1,1))
-plot(thrust(:,1,2))
-plot(thrust(:,1,3))
-
-
 
 
 
