@@ -34,7 +34,7 @@ windvector = [0; 0; 0];
 %% Vary initial air pressure
 
 % Range of pressures to test
-p_gage = linspace(32, 60, 500)*6895;%20-60 psi->Pa
+p_gage = linspace(20, 45, 100)*6895;%20-45 psi->Pa
 pressure = p_ambient + p_gage;
 w = waitbar(0,'Varying initial air preesure...'); % progress bar
 

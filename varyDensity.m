@@ -29,7 +29,7 @@ windvector = [0;0;0];
 %% Vary initial volume of water to find optimum volume
 
 % Range of launch angles to test
-rho_water = linspace(700, 1300, 500);
+rho_water = linspace(700, 1300, 100);
 
 w = waitbar(0,'Varying fuel density...'); % progress bar
 

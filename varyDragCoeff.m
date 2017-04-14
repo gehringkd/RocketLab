@@ -26,7 +26,7 @@ windvector = [0; 0; 0]; %wind not needed for sensitivity analysis
 %% Vary initial value of drag coefficient to find optimum volume
 
 % Range of volumes to test
-drag = linspace(0.25, 0.7, 500);
+drag = linspace(0.25, 0.7, 100);
 
 w = waitbar(0,'Varying drag coefficient...'); % progress bar
 

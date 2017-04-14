@@ -34,13 +34,13 @@ state = [system state];
 windvector = wind;
 
 %Calculate flight path using ode45
-
-[t,dsdt] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
-    ,t,state);
+opts = odeset('Events',@stopping_point); % define event to stop ode45
+[t,allStates] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
+    ,t,state,opts);
 
 %Graph flight path
 figure(1)
-plot3(dsdt(:,7),dsdt(:,8),dsdt(:,9)); %plot(x,y,z)
+plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
 grid on
 axis equal
 ylim([-10 10]);
@@ -58,4 +58,5 @@ varyPressure(t, state, parameters);
 varyAngle(t, state, parameters);
 
 
-
+% Analyze static test stand data
+[t, thrust] = staticTests();

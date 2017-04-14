@@ -16,7 +16,7 @@ Last modified:  04/08/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-value = state(10); % detect when z=state(10) < 0
+value = state(9); % detect when z=state(10) < 0
 isterminal = 1; % stop the integration
 direction = -1; % negative direction
 

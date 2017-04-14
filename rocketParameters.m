@@ -25,8 +25,6 @@ function [parameters,system,state,t] = rocketParameters()
     T_air_i = 300; %K
 
     % --------------------------- Wind ------------------------------
-    %V_wind = [0; 0]; % wind velocity components in [x; z] [m/s]
-
     % For when we have 3D working...
     V_wind = [0; 0; 0]; % wind velocity components in [x; y; z] [m/s]
     % ---------------------------------------------------------------
