@@ -50,8 +50,9 @@ function [parameters,system,state,t] = rocketParameters()
         gage_p_allow = max_gage_p/FOS;
         
     %TA Baseline
-    dragData = importfile('TA_Baseline_2pm.csv');
-    C_D = calcDrag(dragData, A_bottle);
+    %dragData = importfile('TA_Baseline_2pm.csv');
+    %C_D = calcDrag(dragData, A_bottle);
+    C_D = 0.4;
     m_bottle = 144/1000; %kg; mass of empty bottle
     
         
