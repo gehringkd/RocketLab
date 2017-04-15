@@ -1,4 +1,4 @@
-function [stats, time, thrust] = analyzeStatic(file)
+function [peak, delta_t, Isp] = analyzeStatic(file)
 %analyzeStatic reads in and analyzes a file from static test stand tests.
 %{
 The purpose of this function is to analyze a single test stand file.
@@ -38,10 +38,10 @@ thrust = flip(thrust);		% flip thrust vector back
 
 % Trim it
 thrust = thrust(startInd:endInd);
-time = time(startInd:endInd);
 
-%% Find Peak, Avg, and standard deviation of thrust values
-stats = [max(thrust), mean(thrust), std(thrust)]; 
+%% Find Peak thrust and total thrust time
+peak = max(thrust);
+delta_t = time(endInd) - time(startInd);
 
 %% Calculate specific Impulse
 % moved this to a separate function, but haven't done much with it yet
