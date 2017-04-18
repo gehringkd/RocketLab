@@ -38,6 +38,12 @@ opts = odeset('Events',@stopping_point); % define event to stop ode45
 [t,allStates] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
     ,t,state,opts);
 
+% Display expectations
+disp(['Downrange distance achieved: ' num2str(allStates(end,7))]);
+disp(['Crossrange distance achieved: ' num2str(allStates(end,8))]);
+disp(['Height achieved: ' num2str(max(allStates(:,9)))]);
+disp(['Total distance achieved: ' num2str(norm([allStates(end,7), allStates(end,8)]))]);
+
 %Graph flight path
 figure(1)
 plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
@@ -48,18 +54,19 @@ title('Verification Case - Bottle Rocket Flight')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
+
    
 %Sensitivity Analysis
 varyVolWater(t, state, parameters);
 %varyDragCoeff(t, state, parameters);
-varyDensity(t, state, parameters);
+%varyDensity(t, state, parameters);
 %varyPressure(t, state, parameters);
-%varyAngle(t, state, parameters);
+varyAngle(t, state, parameters);
 
 % Analyze static test stand data
-[t, thrust] = staticTests();
-mass = parameters(11)*parameters(3); %initial volume propellant*density 
-Isp = getIsp(thrust,t, mass);
+%[t, thrust] = staticTests();
+%mass = parameters(11)*parameters(3); %initial volume propellant*density 
+%Isp = getIsp(thrust,t, mass);
 
 %Std. Err. of the Mean and Confidence Interval Analysis - Isp
-CI = DataAnalyis(Isp);
+%CI = DataAnalyis(Isp);

@@ -40,7 +40,8 @@ function [parameters,system,state,t] = rocketParameters()
     vol_bottle = 0.002; %m^3 = 2 L
     d_throat = .021; %m
         A_throat = (d_throat/2)^2*pi; %m^2
-    d_bottle = .105; %m
+    %d_bottle = .105; %m
+    d_bottle = .108; %m
         A_bottle = (d_bottle/2)^2*pi; %m^2
     
     %Factor of safety and max pressure
@@ -50,9 +51,9 @@ function [parameters,system,state,t] = rocketParameters()
         gage_p_allow = max_gage_p/FOS;
         
     %TA Baseline
-    %dragData = importfile('TA_Baseline_2pm.csv');
-    %C_D = calcDrag(dragData, A_bottle);
-    C_D = 0.4;
+    dragData = importfile('TA_Baseline_2pm.csv');
+    C_D = calcDrag(dragData, A_bottle);
+    %C_D = 0.4;
     m_bottle = 144/1000; %kg; mass of empty bottle
     
         

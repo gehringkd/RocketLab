@@ -9,7 +9,7 @@ function [dataOther] = importfile(dataArray)
 % Created by Kayla Gehring, 4/13
 
 %% Open the file and extract required data
-dataArray = xlsread(dataArray);
+dataArray = load(dataArray);
 
 %Extract only required variables
     %To calculate needed coefficients, only need v, p_dyn, AoA L, D    

@@ -13,7 +13,7 @@ A = data(:,5);
 D = N.*sin(AoA) + A.*cos(AoA);
 
 %% Calculate the coefficient
-C_D = D./dyn_p/S;
+C_D = D./dyn_p./S;
 
 %% Pass into D_vs_Aoa
 Drag = mean(C_D);
