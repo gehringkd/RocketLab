@@ -20,12 +20,18 @@ addpath('Static Test Stand Data');	% add relative path to directory
 data = load(file);	% get data from file
 thrust = data(:,3);	% get total recorded thrust
 
+% Define time step
+timestep = 1/1.652/1000; %1.652 Hz to s
+
 %%  Trim data
+% Based off peak data to avoid those annoying offsets in some data sets
+peak = max(thrust);
+peakInd = find(thrust==peak,1);
+startInd = peakInd - round(.03/timestep); %determined by lowering time period until all data appeared to be ~ correct
+endInd = peakInd + round(.3/timestep); %make sure there's plenty of room after thrust
+thrust = thrust(startInd:endInd);
 
-% Go ahead and get rid of some of the trailing data
-thrust(end-1000:end) = [];
-
-% Find beginning of useful data
+% Find actual beginning of useful data
 startInd = find(thrust>=3,1);	% first value of thrust
 
 % Find end of useful data
@@ -36,19 +42,16 @@ thrust = flip(thrust);		% flip thrust vector back
 %Group18 has a blip of data row 3515 - that's one of the offsets
 %Other group is 23 or 24 maybe
 
-% Trim it
+% Trim thrust
 thrust = thrust(startInd:endInd);
 
-% Get time
-time = (1/1.652/1000)*[1:length(thrust)]';	% correct time from 1.652 kHz to seconds
+%% Create time array and get total time
+time = timestep*[1:length(thrust)]';
+delta_t = time(end);
 
-%% Find Peak thrust and total thrust time
-peak = max(thrust);
-delta_t = time(end) - time(1);
 
 %% Calculate specific Impulse
-
-mass = 1; %kg
+mass = 1; %kg of water
 Isp = calcImpulse(thrust, time, mass);
 
 
