@@ -39,10 +39,23 @@ opts = odeset('Events',@stopping_point); % define event to stop ode45
     ,t,state,opts);
 
 % Display expectations
-disp(['Downrange distance achieved: ' num2str(allStates(end,7))]);
-disp(['Crossrange distance achieved: ' num2str(allStates(end,8))]);
-disp(['Height achieved: ' num2str(max(allStates(:,9)))]);
-disp(['Total distance achieved: ' num2str(norm([allStates(end,7), allStates(end,8)]))]);
+fprintf('\n');
+disp(['Downrange distance achieved: ' num2str(allStates(end,7)) ' m.']);
+disp(['Crossrange distance achieved: ' num2str(allStates(end,8)) ' m.']);
+disp(['Height achieved: ' num2str(max(allStates(:,9))) ' m.']);
+disp(['Total distance achieved: ' num2str(norm([allStates(end,7), allStates(end,8)])) ' m.']);
+disp(['Angle: ' num2str(atand(allStates(end,8)/allStates(end,7))) ' degrees.']);
+
+% Display results in English units
+fprintf('\n');
+disp(['Downrange distance achieved: ' num2str(allStates(end,7)*3.28084) ' ft.']);
+disp(['Crossrange distance achieved: ' num2str(allStates(end,8)*3.28084) ' ft.']);
+disp(['Height achieved: ' num2str(max(allStates(:,9))*3.28084) ' ft.']);
+disp(['Total distance achieved: ' num2str(norm([allStates(end,7), allStates(end,8)])*3.28084) ' ft.']);
+fprintf('\n');
+
+
+
 
 %Graph flight path
 figure(1)

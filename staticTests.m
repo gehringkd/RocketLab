@@ -50,7 +50,7 @@ for i = 1:numFiles
         %note from Kayla: analyze Static should return peak, total time, 
         % and Isp of each data set. You can graph them/ return all data
         % points if you'd like, but I think we need only one graph.
-		[peakT{i}, timeT(i), Isp(i)] = analyzeStatic(files{i});	% analyize file
+		[thrust{i}, peakT(i), timeT(i), Isp(i)] = analyzeStatic(files{i});	% analyize file
 	%catch
 		%disp(['Could not read file: ' files{i} '. Skipping...']);
 	%end
@@ -58,24 +58,28 @@ for i = 1:numFiles
 	plot(thrust{i})
 	waitbar(i/numFiles); % update progress bar
 end
+close(w); % close progress bar
+xlabel('Time (s)')
+ylabel('Thrust Force (lbf)')
+
 
 %Export "table" of peak thrust, find avg and standard deviation of data
 % ??? = xlsexport(peakT);
-disp(['Average Peak Thrust: ', num2str(peakT)])
-disp(['Standard Deviation of Peak Thrust', num2str(std(peakT))])
+%disp(['Average Peak Thrust: ', num2str(peakT)])
+%disp(['Standard Deviation of Peak Thrust', num2str(std(peakT))])
 
 %Table, Histogram, average, and standard deviation of total time
 % ??? = xlsexport(timeT);
-histfit(timeT);
-disp(['Average Thrust Time: ', num2str(mean(timeT))])
-disp(['Standard Deviation of Thrust Time', num2str(std(timeT))])
+%try
+%	histfit(timeT);
+%catch
+%	histogram(timeT);
+%end
+disp(['Average Thrust Time: ', num2str(mean(timeT))]);
+disp(['Standard Deviation of Thrust Time', num2str(std(timeT))]);
 
 %SEM and CI Analysis (of Isp??)- Plot of SEM v N
-SEM(Isp);
-
-close(w); % close progress bar
-
-
+%SEM(Isp);
 
 
 % dummy return statement for now

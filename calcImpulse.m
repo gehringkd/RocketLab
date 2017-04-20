@@ -11,6 +11,7 @@ function Isp = calcImpulse(thrust, time,  mass)
 
 
 % Integrate to find total impulse
+impulse = trapz(time,thrust);
 
 Isp = impulse/(mass*9.81); %s
 
