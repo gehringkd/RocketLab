@@ -69,6 +69,10 @@ zlabel('Vertical height (m)')
 
 
 %% Isp model
+
+% Get static test stand data for Group 24
+thrustData = group24Thrust()
+
 %Calculate flight path using ode45
 [t,allStates] = ode45(@(t,state) ispModel(t,state,parameters,windvector,45,thrustData) ...
     ,t,state,opts);
