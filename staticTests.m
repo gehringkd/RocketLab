@@ -12,7 +12,7 @@ Outputs: t	- time vector
 
 Created by:     Keith Covington
 Created on:     04/13/2017
-Last modified:  04/14/2017
+Last modified:  04/20/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -50,12 +50,12 @@ for i = 1:numFiles
         %note from Kayla: analyze Static should return peak, total time, 
         % and Isp of each data set. You can graph them/ return all data
         % points if you'd like, but I think we need only one graph.
-		[thrust{i}, peakT(i), timeT(i), Isp(i)] = analyzeStatic(files{i});	% analyize file
+		[thrust{i}, time, peakT(i), timeT(i), Isp(i)] = analyzeStatic(files{i});	% analyize file
 	%catch
 		%disp(['Could not read file: ' files{i} '. Skipping...']);
 	%end
     
-	plot(thrust{i})
+	plot(time,thrust{i})
 	waitbar(i/numFiles); % update progress bar
 end
 close(w); % close progress bar
@@ -74,6 +74,7 @@ histogram(timeT);
 title('Total Time of Thrust')
 xlabel('time (s)')
 
+disp(['Isp: ', num2str(mean(Isp))]);
 disp(['Average Thrust Time: ', num2str(mean(timeT))]);
 disp(['Standard Deviation of Thrust Time: ', num2str(std(timeT))]);
 disp(['Average Peak Thrust: ', num2str(mean(peakT))]);

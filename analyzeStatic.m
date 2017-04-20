@@ -1,4 +1,4 @@
-function [thrust, peak, delta_t, Isp] = analyzeStatic(file)
+function [thrust, time, peak, delta_t, Isp] = analyzeStatic(file)
 %analyzeStatic reads in and analyzes a file from static test stand tests.
 %{
 The purpose of this function is to analyze a single test stand file.
@@ -17,8 +17,8 @@ Last modified:  04/14/2017
 addpath('Static Test Stand Data');	% add relative path to directory
 
 %% Load data
-data = load(file);	% get data from file
-thrust = data(:,3);	% get total recorded thrust
+data = load(file);		% get data from file
+thrust = data(:,3).*4.44822;	% get total recorded thrust
 
 % Define time step
 timestep = 1/1.652/1000; %1.652 Hz to s
@@ -28,7 +28,7 @@ timestep = 1/1.652/1000; %1.652 Hz to s
 peak = max(thrust);
 peakInd = find(thrust==peak,1);
 startInd = peakInd - round(.03/timestep); %determined by lowering time period until all data appeared to be ~ correct
-endInd = peakInd + round(.3/timestep); %make sure there's plenty of room after thrust
+endInd = peakInd + round(.25/timestep); %make sure there's plenty of room after thrust
 thrust = thrust(startInd:endInd);
 
 % Find actual beginning of useful data
@@ -36,7 +36,7 @@ startInd = find(thrust>=3,1);	% first value of thrust
 
 % Find end of useful data
 thrust = flip(thrust);		% flip the thrust vector around
-endInd = find(thrust<=-3,1);	% last-ish value of thrust
+endInd = find(thrust<=-3.5,1);	% last-ish value of thrust
 endInd = length(thrust)-endInd;	% accound for flipped vector
 thrust = flip(thrust);		% flip thrust vector back
 %Group18 has a blip of data row 3515 - that's one of the offsets
