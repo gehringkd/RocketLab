@@ -25,7 +25,7 @@ function [parameters,system,state,t] = rocketParameters()
     p_ambient = 12.077481; %psi
         p_ambient = p_ambient*6895; %Pa
     T_air_i = 300; %K
-    T_air_i = 301; %K
+    T_air_i = 273+13.3; %K
 
     % --------------------------- Wind ------------------------------
     % For when we have 3D working...
@@ -57,7 +57,7 @@ function [parameters,system,state,t] = rocketParameters()
     dragData = importfile('TA_Baseline_2pm.csv');
     C_D = calcDrag(dragData, A_bottle);
     %C_D = 0.4;
-    m_bottle = 156/1000; %kg; mass of empty bottle
+    m_bottle = 164/1000; %kg; mass of empty bottle
     
         
 %% Initial conditions of equations calculated by ode45

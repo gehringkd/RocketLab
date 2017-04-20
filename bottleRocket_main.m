@@ -55,8 +55,6 @@ disp(['Total distance achieved: ' num2str(norm([allStates(end,7), allStates(end,
 fprintf('\n');
 
 
-
-
 %Graph flight path
 figure(1)
 plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
@@ -68,9 +66,19 @@ xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
 
-   
+
+
+%% Isp model
+%Calculate flight path using ode45
+[t,allStates] = ode45(@(t,state) ispModel(t,state,parameters,windvector,45,thrustData) ...
+    ,t,state,opts);
+
+
+
+
+
 %Sensitivity Analysis
-varyVolWater(t, state, parameters);
+%varyVolWater(t, state, parameters);
 %varyDragCoeff(t, state, parameters);
 %varyDensity(t, state, parameters);
 %varyPressure(t, state, parameters);
