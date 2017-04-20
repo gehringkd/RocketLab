@@ -1,4 +1,4 @@
-function [ CI ] = SEMandCI( data )
+function SEMandCI( data )
 %SEM Creates a plot of standard error of the mean vs N samples of data and
 %prints the final SEM for the full data set given. Also calculates
 %confidence intervals(95%,97.5%,99%) of data.
@@ -13,31 +13,38 @@ function [ CI ] = SEMandCI( data )
 % Last Editted: 4/14
 
 %% Create table of SEM vs N as N grows
-SEM = zeros(1, length(data));
+SEM = zeros(length(data),2);
 
 for N = 1:length(data)
-    SEM(N, :) = [std(data(1:N))/sqrt(N), N];
+    SEM(N,:) = [std(data(1:N))/sqrt(N), N];
 end
 
 %Create Plot
-plot(SEM(2,:), SEM(1,:));
+figure
+scatter(SEM(:,2), SEM(:,1));
+xlabel('Number of Samples')
+ylabel('\sigma_{I_{sp}}, s')
+title('\sigma vs N')
 
 %State the final SEM
-disp(['Standard Error of the Mean: ', num2str(SEM(1,end)])
-disp(['Number of data points: ', num2str(SEM(2,end)])
+disp(['Standard Error of the Mean, Isp: ', num2str(SEM(end,1))])
+disp(['Number of data points: ', num2str(SEM(end,2))])
 
 %% Calculate the 95%, 97.5%, and 99% confidence intervals
 % produces mean +- z*SEM. z values for each CI:
-CI = [95,; 97.5; 99];
-z = [1.96; 2.24; 2.58];
-CI_low = xbar - z*SEM;
-CI_high = xbar + z*SEM;
+CI = [95, 95, 97.5, 97.5, 99, 99];
+z = [1.96, 1.96; 2.24, 2.24; 2.58, 2.58];
+xbar = mean(data);
+    CI = [xbar - z(:,1).*SEM(end,1), xbar + z(:,2).*SEM(end,1)];
+
 
 % Create CI matrix
 %Column 1: CI, Column 2: lower bound of CI, Column 3: upper bound of CI
-CI = [CI, CI_low, CI_high];
+Rows = {'95.0%';'97.5%';'99.0%'};
+T = table(CI, 'RowNames', Rows);
 
-% Export to CSV for ease of putting in LaTeX
-%I don't know the command 
+% Export
+writetable(T,'ConfidenceIntervals.csv','WriteRowNames', true);
+display('ConfidenceIntervals.csv')
 end
 

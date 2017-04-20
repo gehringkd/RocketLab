@@ -33,14 +33,12 @@ thrust = flip(thrust);		% flip the thrust vector around
 endInd = find(thrust<=-3,1);	% last-ish value of thrust
 endInd = length(thrust)-endInd;	% accound for flipped vector
 thrust = flip(thrust);		% flip thrust vector back
-%Group18 has a blip of data row 3515 - that's one of the offsets
-%Other group is 23 or 24 maybe
 
 % Trim it
 thrust = thrust(startInd:endInd);
 
 % Get time
-time = (1/1.652/1000)*[1:length(thrust)]';	% correct time from 1.652 kHz to seconds
+time = (1/1.652/1000)*[1:length(thrust)];	% correct time from 1.652 kHz to seconds
 
 %% Find Peak thrust and total thrust time
 peak = max(thrust);

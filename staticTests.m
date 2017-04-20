@@ -27,9 +27,9 @@ files = cell(numFiles, 1);		% cell array for filenames
 thrust = cell(numFiles, 1);		% cell array for thrust data
 
 % Create data table for peak Thrust, Isp, and total time of each data set
-peakT = zeros(3, length(direc)); %for Results, Q3
-Isp = zeros(1, length(direc)); %for Results, Q2
-timeT = zeros(1, length(direc)); %for Results, Q4
+peakT = zeros(length(direc),1); %for Results, Q3
+Isp = zeros(length(direc),1); %for Results, Q2
+timeT = zeros(length(direc),1); %for Results, Q4
 
 % Try plotting
 figure
@@ -41,9 +41,9 @@ for i = 1:numFiles
 	files{i} = direc(i).name;
 
 	% remove files we don't want
-	if ~contains(files{i}, 'Group')
-		files{i} = [];		% delete cell/filename entry
-	end
+%	if ~contains(files{i}, 'Group')
+%		files{i} = [];		% delete cell/filename entry
+%	end
 
 	% Analyze files
 	%try
@@ -54,7 +54,7 @@ for i = 1:numFiles
 	%catch
 		%disp(['Could not read file: ' files{i} '. Skipping...']);
 	%end
-
+    
 	plot(thrust{i})
 	waitbar(i/numFiles); % update progress bar
 end
@@ -63,25 +63,23 @@ xlabel('Time (s)')
 ylabel('Thrust Force (lbf)')
 
 
-%Export "table" of peak thrust, find avg and standard deviation of data
-% ??? = xlsexport(peakT);
-%disp(['Average Peak Thrust: ', num2str(peakT)])
-%disp(['Standard Deviation of Peak Thrust', num2str(std(peakT))])
+%Table, Histogram, average, and standard deviations
+GroupNumber = [1, 3:15, 17:34]';
+T = table(GroupNumber, timeT, peakT, Isp);
+writetable(T, 'AllAnalyzedData.csv', 'WriteRowNames',true);
+display('AllAnalyzedData.csv')
 
-%Table, Histogram, average, and standard deviation of total time
-% ??? = xlsexport(timeT);
-%try
-%	histfit(timeT);
-%catch
-%	histogram(timeT);
-%end
+figure
+histogram(timeT);
+title('Total Time of Thrust')
+xlabel('time (s)')
+
 disp(['Average Thrust Time: ', num2str(mean(timeT))]);
-disp(['Standard Deviation of Thrust Time', num2str(std(timeT))]);
+disp(['Standard Deviation of Thrust Time: ', num2str(std(timeT))]);
+disp(['Average Peak Thrust: ', num2str(mean(peakT))]);
+disp(['Standard Deviation of Peak Thrust: ', num2str(std(peakT))]);
 
 %SEM and CI Analysis (of Isp??)- Plot of SEM v N
-%SEM(Isp);
+SEMandCI(Isp);
 
 
-% dummy return statement for now
-t = 0;
-thrust = 0;
