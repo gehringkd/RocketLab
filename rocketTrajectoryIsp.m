@@ -67,34 +67,9 @@ V = [Vx; Vy; Vz];
 
 %% First Phase - Thrust generation
 % This phase continues for the same amount of time as the thrust data
-    % Load our thrust data
-    data = load('Group24_02PM_Statictest1');	% get data from file
-    thrust = data(:,3).*4.44822;	% get total recorded thrust in N
-    % Define time step
-    timestep = 1/1.652/1000; %1.652 Hz to s
-    
-
-    % Trim data
-    % Based off peak data to avoid those annoying offsets in some data sets
-    peak = max(thrust);
-    peakInd = find(thrust==peak,1);
-    startInd = peakInd - round(.1/timestep); %determined by lowering time period until all data appeared to be ~ correct
-    endInd = peakInd + round(.3/timestep); %make sure there's plenty of room after thrust
-    thrust = thrust(startInd:endInd);
-
-    % Define actual beginning of useful data
-    startInd = 110;	% first value of thrust
-    endInd = 600;
-    thrust = thrust(startInd:endInd);
-
-    % Create matching time array
-    time = timestep*[1:length(thrust)]';
-
-    %Group18 has a blip of data row 3515 - that's one of the offsets
-    %Other group is 23 or 24 maybe
-
-    % Trim thrust
-    thrust = thrust(startInd:endInd);
+    %Get thrust and time array
+    T_v_t = group24Thrust();
+    thrust = T_v_t(:,1)
 
 %% Create time array and get total time
 time = timestep*[1:length(thrust)]';

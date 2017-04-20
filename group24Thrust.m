@@ -18,6 +18,13 @@ function [Thrust_v_time] = group24Thrust()
     timestep = 1/1.652/1000; %1.652 Hz to s
     time = timestep*[1:length(thrust)]';
 
+    %Adjust zero-line to account for load cells
+    xfit = [time(1) time(end)];
+    yfit = [thrust(1) thrust(end)];
+    coefs = polyfit(xfit,yfit,1);
+    y = polyval(coefs, time);
+    thrust = thrust-y;
+
     %Create output matrix
     Thrust_v_time = [thrust,time];
 end
