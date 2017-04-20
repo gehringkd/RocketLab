@@ -71,8 +71,10 @@ display('AllAnalyzedData.csv')
 
 figure
 histogram(timeT);
-title('Total Time of Thrust')
-xlabel('time (s)')
+title('Frequency of Total Time of Thrust')
+xlabel('Total time (s)')
+ylabel('Frequency')
+set(gca,'fontsize',20)
 
 disp(['Isp: ', num2str(mean(Isp))]);
 disp(['Average Thrust Time: ', num2str(mean(timeT))]);

@@ -23,8 +23,9 @@ end
 figure
 scatter(SEM(:,2), SEM(:,1));
 xlabel('Number of Samples')
-ylabel('\sigma_{I_{sp}}, s')
-title('\sigma vs N')
+ylabel('SEM{I_{sp}}, s')
+title('Standard Error of the Mean vs sample size')
+set(gca,'fontsize',20)
 
 %State the final SEM
 disp(['Standard Error of the Mean, Isp: ', num2str(SEM(end,1))])
