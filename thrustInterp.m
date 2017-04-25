@@ -1,4 +1,4 @@
-function [dsdt] = ispModel(t,state,parameters,wind,angle,thrustData)
+function [dsdt] = thrustInterp(t,state,parameters,wind,angle,thrustData)
 %BOTTLEROCKETTRAJECTORY is a system of equations meant to be solved using
 %ode45 to plot the trajectory of a bottle rocket.
 %{
@@ -65,15 +65,39 @@ z = state(9);	% z-position [m]
 % Define velocity vector and magnitude of velocity
 V = [Vx; Vy; Vz];
 
-time = thrustData(:,1);
-thrust = thrustData(:,2);
+thrust = thrustData(:,1);
+time = thrustData(:,2);
 
 
 %% Propulsion Phase
 
 if t <= time(end)
-	approxInd = find(t>=time,1);
-	F = thrust(approxInd);
+	ind1 = find(t<=time,1);
+	ind2 = ind1+1;
+
+	x1 = time(ind1);
+	x2 = time(ind2);
+	y1 = thrust(ind1);
+	y2 = thrust(ind2);
+
+	F = y1 + (t-x1)*(y2-y1)/(x2-x1);
+	F = abs(F);
+	V_e = sqrt(F/rho_w/A_t);
+	dm_Rdt = rho_w*A_t*V_e;
+
+
+
+%{
+dsdt(1) = dvdt;
+dsdt(2) = dm_Rdt;
+dsdt(3) = dm_airdt;
+dsdt(4) = dVdt(1);
+dsdt(5) = dVdt(2);
+dsdt(6) = dVdt(3);
+dsdt(7) = dxdt;
+dsdt(8) = dydt;
+dsdt(9) = dzdt;
+%}
 
 
 %% Third Phase - Ballistic
@@ -88,10 +112,11 @@ else
     dm_airdt = 0;
     dm_Rdt = 0;  
 end
+if v == Vol_B && p <= p_a
+	error('there is something wrong with pressure calculations.')
 end
-    if v == Vol_B && p <= p_a
-        error('there is something wrong with pressure calculations.')
-    end
+
+
 %% General Rocket Trajectory
 %These equations apply to all 3 phases
 
@@ -161,9 +186,9 @@ end
 
 
 %% Feed new system back out as a useable array
-dsdt(1) = dvdt;
+%dsdt(1) = dvdt;
 dsdt(2) = dm_Rdt;
-dsdt(3) = dm_airdt;
+%dsdt(3) = dm_airdt;
 dsdt(4) = dVdt(1);
 dsdt(5) = dVdt(2);
 dsdt(6) = dVdt(3);
