@@ -60,7 +60,7 @@ for i = 1:numFiles
 end
 close(w); % close progress bar
 xlabel('Time (s)')
-ylabel('Thrust Force (lbf)')
+ylabel('Thrust Force (N)')
 
 
 %Table, Histogram, average, and standard deviations
@@ -81,6 +81,7 @@ disp(['Average Thrust Time: ', num2str(mean(timeT))]);
 disp(['Standard Deviation of Thrust Time: ', num2str(std(timeT))]);
 disp(['Average Peak Thrust: ', num2str(mean(peakT))]);
 disp(['Standard Deviation of Peak Thrust: ', num2str(std(peakT))]);
+disp(['Standard Deviation of Isp: ', num2str(std(Isp))]);
 
 %SEM and CI Analysis (of Isp??)- Plot of SEM v N
 SEMandCI(Isp);

@@ -28,7 +28,7 @@ timestep = 1/1.652/1000; %1.652 Hz to s
 peak = max(thrust);
 peakInd = find(thrust==peak,1);
 startInd = peakInd - round(.03/timestep); %determined by lowering time period until all data appeared to be ~ correct
-endInd = peakInd + round(.25/timestep); %make sure there's plenty of room after thrust
+endInd = peakInd + round(.3/timestep); %make sure there's plenty of room after thrust
 thrust = thrust(startInd:endInd);
 
 % Find actual beginning of useful data

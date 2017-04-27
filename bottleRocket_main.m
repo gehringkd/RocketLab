@@ -35,6 +35,7 @@ windvector = wind;
 
 %Calculate flight path using ode45
 opts = odeset('Events',@stopping_point); % define event to stop ode45
+%{
 [t,allStates] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
     ,t,state,opts);
 
@@ -55,8 +56,6 @@ disp(['Total distance achieved: ' num2str(norm([allStates(end,7), allStates(end,
 fprintf('\n');
 
 
-
-
 %Graph flight path
 figure(1)
 plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
@@ -67,8 +66,42 @@ title('Verification Case - Bottle Rocket Flight')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
+%}
 
-   
+
+%% Monte Carlo Simulation
+
+
+
+
+
+
+
+
+
+%% Isp model
+
+% Get static test stand data for Group 24
+thrustData = group24Thrust();
+
+%Calculate flight path using ode45
+[t,allStates] = ode45(@(t,state) thrustInterp(t,state,parameters,windvector,45,thrustData) ...
+    ,t,state,opts);
+
+%Graph flight path
+figure
+plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
+grid on
+axis equal
+ylim([-10 10]);
+title('Verification Case - Bottle Rocket Flight')
+xlabel('Downrange distance (m)')
+ylabel('Crossrange distance (m)')
+zlabel('Vertical height (m)')
+
+
+
+
 %Sensitivity Analysis
 %varyVolWater(t, state, parameters);
 %varyDragCoeff(t, state, parameters);
