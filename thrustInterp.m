@@ -81,11 +81,10 @@ if t <= time(end)
 	y2 = thrust(ind2);
 
 	F = y1 + (t-x1)*(y2-y1)/(x2-x1);
-	F = abs(F);
 	V_e = sqrt(F/rho_w/A_t);
 	dm_Rdt = rho_w*A_t*V_e;
 
-
+disp(['Phase 1  t=' num2str(t) ' s']);
 
 %{
 dsdt(1) = dvdt;
@@ -111,6 +110,8 @@ else
     F = 0;
     dm_airdt = 0;
     dm_Rdt = 0;  
+
+disp(['Phase 2  t=' num2str(t) ' s']);
 end
 if v == Vol_B && p <= p_a
 	error('there is something wrong with pressure calculations.')

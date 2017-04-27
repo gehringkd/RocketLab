@@ -35,7 +35,6 @@ windvector = wind;
 
 %Calculate flight path using ode45
 opts = odeset('Events',@stopping_point); % define event to stop ode45
-%{
 [t,allStates] = ode45(@(t,state) rocketTrajectory(t,state,parameters,windvector, 45) ...
     ,t,state,opts);
 
@@ -66,23 +65,18 @@ title('Verification Case - Bottle Rocket Flight')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
-%}
 
 
 %% Monte Carlo Simulation
+%monteCarlo(t,state,parameters,opts);
 
 
-
-
-
-
-
-
-
-%% Isp model
-
+%% Thrust Interpolation model
 % Get static test stand data for Group 24
-thrustData = group24Thrust();
+%thrustData = group24Thrust();
+
+%plot(thrustData(:,2),thrustData(:,1))
+%{
 
 %Calculate flight path using ode45
 [t,allStates] = ode45(@(t,state) thrustInterp(t,state,parameters,windvector,45,thrustData) ...
@@ -99,15 +93,17 @@ xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
 
-
-
+%}
 
 %Sensitivity Analysis
-%varyVolWater(t, state, parameters);
-%varyDragCoeff(t, state, parameters);
-%varyDensity(t, state, parameters);
-%varyPressure(t, state, parameters);
+varyVolWater(t, state, parameters);
+varyDragCoeff(t, state, parameters);
+varyDensity(t, state, parameters);
+varyPressure(t, state, parameters);
 varyAngle(t, state, parameters);
+
+%TODO display delta distance achieved by each optimization
+
 
 % Analyze static test stand data
 %[t, thrust] = staticTests();

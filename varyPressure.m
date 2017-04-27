@@ -68,11 +68,11 @@ end
 close(w); % close progress bar
 
 % Remove outliers
-%a = [0 diff(x)];
-%b = std(a)*ones(1,length(x));
-%pressure(a >= 3*b) = [];
-%z(a >= 3*b) = [];
-%x(a >= 3*b) = [];
+a = [0 diff(x)];
+b = std(a)*ones(1,length(x));
+pressure(a >= 3*b) = [];
+z(a >= 3*b) = [];
+x(a >= 3*b) = [];
 
 % Plot various volumes and their respective achieved distance
 figure
@@ -83,7 +83,7 @@ xlabel('Inital Air Pressure (psi)')
 ylabel('Distance Achieved (m)')
 
 % Find and plot line of best fit
-coefs = polyfit(pressure/6895, x, 3);
+coefs = polyfit(pressure/6895, x, 2);
 xFit = linspace(min(pressure/6895), max(pressure/6895), 1000);
 yFit = polyval(coefs, xFit);
 plot(xFit, yFit)
