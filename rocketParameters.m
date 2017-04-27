@@ -25,7 +25,11 @@ function [parameters,system,state,t] = rocketParameters()
     p_ambient = 12.077481; %psi
         p_ambient = p_ambient*6895; %Pa
     T_air_i = 300; %K
+<<<<<<< HEAD
+    T_air_i = 278; %K
+=======
     T_air_i = 273+13.3; %K
+>>>>>>> ab1f8a467fe6a10dae6cd1dd8da65df5a625398e
 
     % --------------------------- Wind ------------------------------
     % For when we have 3D working...
@@ -33,8 +37,8 @@ function [parameters,system,state,t] = rocketParameters()
     % ---------------------------------------------------------------
     
     %Flight parameters - likely to change
-    C_d = 0.8; %discharge coefficient
-    p_gage = 50; %psi, initial gage pressure
+    C_d = 0.9; %discharge coefficient
+    p_gage = 40; %psi, initial gage pressure
         p_gage = p_gage*6895; %Pa
         p_0 = p_ambient + p_gage; %Pa
     vol_water_i = 0.001; %m^3, initial volume of water
@@ -57,7 +61,11 @@ function [parameters,system,state,t] = rocketParameters()
     dragData = importfile('TA_Baseline_2pm.csv');
     C_D = calcDrag(dragData, A_bottle);
     %C_D = 0.4;
+<<<<<<< HEAD
+    m_bottle = 144/1000; %kg; mass of empty bottle
+=======
     m_bottle = 164/1000; %kg; mass of empty bottle
+>>>>>>> ab1f8a467fe6a10dae6cd1dd8da65df5a625398e
     
         
 %% Initial conditions of equations calculated by ode45
