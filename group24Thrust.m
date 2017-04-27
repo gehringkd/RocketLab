@@ -8,23 +8,23 @@ function [Thrust_v_time] = group24Thrust()
 % Created by Kayla Gehring, 4/20
 
     % Load our thrust data
-    data = load('Group24_02PM_Statictest1');	% get data from file
+    data = load('Group25_02PM_Statictest1');	% get data from file
     thrust = data(:,3).*4.44822;	% get total recorded thrust in N
     
     % Extract useful data   
-    thrust = thrust(2460:2945);
+    thrust = thrust(2249:2725);
 
     % Create matching time array
     timestep = 1/1.652/1000; %1.652 Hz to s
     time = timestep*[1:length(thrust)]';
-
+    
     %Adjust zero-line to account for load cells
     xfit = [time(1) time(end)];
     yfit = [thrust(1) thrust(end)];
     coefs = polyfit(xfit,yfit,1);
     y = polyval(coefs, time);
     thrust = thrust-y;
-
+    
     %Create output matrix
     Thrust_v_time = [thrust,time];
 end

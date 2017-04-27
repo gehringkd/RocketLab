@@ -70,16 +70,41 @@ zlabel('Vertical height (m)')
 
    
 %Sensitivity Analysis
-varyVolWater(t, state, parameters);
+%varyVolWater(t, state, parameters);
 %varyDragCoeff(t, state, parameters);
 %varyDensity(t, state, parameters);
 %varyPressure(t, state, parameters);
-varyAngle(t, state, parameters);
+%varyAngle(t, state, parameters);
 
 % Analyze static test stand data
-%[t, thrust] = staticTests();
-%mass = parameters(11)*parameters(3); %initial volume propellant*density 
-%Isp = getIsp(thrust,t, mass);
+Isp_Avg = staticTests();
 
-%Std. Err. of the Mean and Confidence Interval Analysis - Isp
-%CI = DataAnalyis(Isp);
+%Thrust Interpolation Model
+T_v_t = group24Thrust();
+tspan = [T_v_t(end,1), T_v_t(end,2)];
+Isp = calcImpulse(T_v_t(:,1), T_v_t(:,2), 1);
+
+%Rocket Equation/Isp model
+    %find initial velocity
+    m_initial = state(2);
+    m_final = parameters(19); %mass bottle
+    V1 = Isp*9.81*log(m_initial/m_final);
+    V1 = [cosd(45)*V1, 0, cosd(45)*V1];
+    state2 = [V1, 0, 0, 0.1];
+
+opts = odeset('Events',@stopping_point2); % define event to stop ode45
+t2 = [0,5];
+[t2,allStates2] = ode45(@(t2,state2) rocketTrajectoryIsp(t2,state2,parameters,windvector,41) ...
+    ,t2,state2,opts);
+
+
+figure
+plot3(allStates2(:,4),allStates2(:,5),allStates2(:,6)); %plot(x,y,z)
+grid on
+axis equal
+ylim([-10 10]);
+title('Bottle Rocket Flight, I_{sp} Model')
+xlabel('Downrange distance (m)')
+ylabel('Crossrange distance (m)')
+zlabel('Vertical height (m)')
+

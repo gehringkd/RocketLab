@@ -1,4 +1,4 @@
-function [t, thrust] = staticTests()
+function [Ispreturn] = staticTests()
 %staticTests analyzes all static test stand data and produces data of 
 % thrust vs. time.
 %{
@@ -84,5 +84,7 @@ disp(['Standard Deviation of Peak Thrust: ', num2str(std(peakT))]);
 
 %SEM and CI Analysis (of Isp??)- Plot of SEM v N
 SEMandCI(Isp);
+
+Ispreturn = mean(Isp);
 
 
