@@ -21,9 +21,21 @@ function [Thrust_v_time] = group24Thrust()
     %Adjust zero-line to account for load cells
     xfit = [time(1) time(end)];
     yfit = [thrust(1) thrust(end)];
+    yfit = [0 thrust(end)];
     coefs = polyfit(xfit,yfit,1);
     y = polyval(coefs, time);
     thrust = thrust-y;
+
+    %{
+    figure
+    hold on
+    plot(time,thrust)
+    plot(time,y)
+
+    % Adjust thrust based on minimum thrust value
+    minThrust = min(thrust)
+    thrust = thrust + abs(minThrust)+0.000001;
+    %}
     
     %Create output matrix
     Thrust_v_time = [thrust,time];

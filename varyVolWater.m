@@ -86,7 +86,7 @@ xlabel('Inital Volume of Water (liters)')
 ylabel('Distance Achieved (m)')
 
 % Find and plot line of best fit
-coefs = polyfit(volume, x, 2);
+coefs = polyfit(volume, x, 3);
 xFit = linspace(min(volume), max(volume), 1000);
 yFit = polyval(coefs, xFit);
 plot(xFit, yFit)
