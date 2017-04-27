@@ -50,15 +50,13 @@ angle = angle*pi/180; %angle of launcher
 
 %% Make array s (inputs of rocket system) useable
 
-v = state(1);	% volume of air in tank [m^3]
-m_R = state(2);	% mass of rocket [kg]
-m_air = state(3);	% mass of air in tank [kg]
-Vx = state(4);	% x-component of velocity [m/s]
-Vy = state(5);	% y-component of velocity [m/s]
-Vz = state(6);	% z-component of velocity [m/s]
-x = state(7);	% x-position [m]
-y = state(8);	% y-position [m]
-z = state(9);	% z-position [m]
+m_R = state(1)	% mass of rocket [kg]
+Vx = state(2);	% x-component of velocity [m/s]
+Vy = state(3);	% y-component of velocity [m/s]
+Vz = state(4);	% z-component of velocity [m/s]
+x = state(5);	% x-position [m]
+y = state(6);	% y-position [m]
+z = state(7);	% z-position [m]
 
 
 %% Get state parameters passed into function
@@ -71,19 +69,38 @@ time = thrustData(:,2);
 
 %% Propulsion Phase
 
-if t <= time(end)
-	ind1 = find(t<=time,1);
-	ind2 = ind1+1;
+if t <= time(end) && m_R >= 0
+	if t<time(1,1)
+        x1 = 0;
+        x2 = time(1,1);
+        y1 = 0;
+        y2 = thrust(1,1);
+    else
+        ind1 = find(time>=t,1)-1;
+        ind2 = ind1+1;
 
-	x1 = time(ind1);
-	x2 = time(ind2);
-	y1 = thrust(ind1);
-	y2 = thrust(ind2);
+        x1 = time(ind1);
+        x2 = time(ind2);
+        y1 = thrust(ind1);
+        y2 = thrust(ind2);
+    end
 
 	F = y1 + (t-x1)*(y2-y1)/(x2-x1);
 	F = abs(F);
-	V_e = sqrt(F/rho_w/A_t);
-	dm_Rdt = rho_w*A_t*V_e;
+    
+    if m_R >= .144+m_air_i %mass bottle + air, just troubleshooting right now
+        V_e = sqrt(F/rho_w/A_t);
+        dm_Rdt = -rho_w*A_t*V_e;
+    elseif m_R >=.144
+        m_air = m_R - m_air_i;
+        rho_a = m_air/Vol_B;
+        V_e = sqrt(F/rho_a/A_t);
+        dm_Rdt = -rho_a*A_t*V_e;
+    else
+        dm_Rdt = 0;
+        disp('hm');
+    end
+            
 
 
 
@@ -107,14 +124,10 @@ else
     %There is no longer any thrust being produced and the mass is 
     %approximately equal to the mass of the bottle and is no longer
     %changing
-    dvdt = 0;
     F = 0;
-    dm_airdt = 0;
     dm_Rdt = 0;  
 end
-if v == Vol_B && p <= p_a
-	error('there is something wrong with pressure calculations.')
-end
+
 
 
 %% General Rocket Trajectory
@@ -122,8 +135,7 @@ end
 
 %The ground is z = 0 so no calculations needed:
 if z <= 0
-    dm_airdt=0;
-    dvdt = 0;
+
     dm_Rdt = 0;
     dVdt = [0 0 0];
     dxdt = 0;
@@ -162,39 +174,22 @@ else
 	%derivatives (all vectors [x;y;z];
 	dVdt = sumF./m_R; % [m/s^2]
 
-
-	%Given an initial angle theta, the change of theta with respect to time is:
-	%if Vrel_mag < 1 %V == 0 causes an immediately negative trajectory
-	%	dthdt = 0;
-	%else
-	%	dthdt = (-g(3)*cos(th))/Vrel_mag;
-	%end
-
-	%Given an initial horizontal distance x, the change of x with respect to
-	%time:
-	%dxdt = V*cos(th);
-
 	% Components of velocity vector
 	dxdt = V(1);
 	dydt = V(2);
 	dzdt = V(3);
 
-	%Given an initial height z, the change of z with respect to time:
-	%dzdt = V*sin(th);
-	    
 end
 
 
 %% Feed new system back out as a useable array
-%dsdt(1) = dvdt;
-dsdt(2) = dm_Rdt;
-%dsdt(3) = dm_airdt;
-dsdt(4) = dVdt(1);
-dsdt(5) = dVdt(2);
-dsdt(6) = dVdt(3);
-dsdt(7) = dxdt;
-dsdt(8) = dydt;
-dsdt(9) = dzdt;
+dsdt(1) = dm_Rdt;
+dsdt(2) = dVdt(1);
+dsdt(3) = dVdt(2);
+dsdt(4) = dVdt(3);
+dsdt(5) = dxdt;
+dsdt(6) = dydt;
+dsdt(7) = dzdt;
 
 dsdt = dsdt';
 end

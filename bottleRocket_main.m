@@ -79,18 +79,20 @@ zlabel('Vertical height (m)')
 
 
 
-%% Isp model
+%% Isp model and thrust interpolation
 
 % Get static test stand data for Group 24
 thrustData = group24Thrust();
+state(1) = [];
+state(2) = [];
 
 %Calculate flight path using ode45
-[t,allStates] = ode45(@(t,state) thrustInterp(t,state,parameters,windvector,45,thrustData) ...
+[t,allStates] = ode45(@(t,state) thrustInterp(t,state,parameters,windvector,41,thrustData) ...
     ,t,state,opts);
 
 %Graph flight path
 figure
-plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
+plot3(allStates(:,5),allStates(:,6),allStates(:,7)); %plot(x,y,z)
 grid on
 axis equal
 ylim([-10 10]);
