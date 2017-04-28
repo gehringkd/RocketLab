@@ -71,11 +71,11 @@ close(w); % close progress bar
 volume = 1000.*volume; % convert water volume from [m^3] to [liters]
 
 % Remove outliers
-%a = [0 diff(x)];
-%b = std(a)*ones(1,length(x));
-%volume(a >= 3*b) = [];
-%z(a >= 3*b) = [];
-%x(a >= 3*b) = [];
+a = [0 diff(x)];
+b = std(a)*ones(1,length(x));
+volume(a >= 3*b) = [];
+z(a >= 3*b) = [];
+x(a >= 3*b) = [];
 
 % Plot various volumes and their respective achieved distance
 figure

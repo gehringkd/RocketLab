@@ -1,4 +1,4 @@
-function [] = monteCarlo(t, state, parameters, opts)
+function [] = monteCarlo(t, state, parameters, windvector, opts)
 %monteCarlo plots the error ellipses from Monte Carlo simulation.
 %{
 The purpose of this program is to 
@@ -29,8 +29,7 @@ Isp_var = 0.1;          % error in Isp calculation
 m_bottle = 79-m_bottle_var + 2*m_bottle_var*rand(num_var,1);
 theta = 45-theta_var + 2*theta_var*rand(num_var,1);
 cd = 0.3-theta_var + 2*cd_var*rand(num_var,1);
-wind = 0-wind_var + 2*wind_var*rand(num_var,1);
-windvector = wind;
+%wind = 0-wind_var + 2*wind_var*rand(num_var,1);
 Isp = 1.5-Isp_var + 2*Isp_var*rand(num_var,1);
 
 % Initialize landing coordinates
@@ -40,21 +39,36 @@ figure
 hold on
 grid on
 axis equal
-ylim([-10 10]);
-title('Verification Case - Bottle Rocket Flight')
+%ylim([-10 10]);
+title('Rocket Flight - Monte Carlo Sim.')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
 
 
+bottleVar = -0.001*(m_bottle_var+2*m_bottle_var*rand(num_var,1))
+
 % Vary dry mass of bottle
-for p1 = 1:length(m_bottle)
-	parameters(19) = m_bottle(p1);
+for p1 = 1:length(bottleVar)
+	state(2) = state(2)+bottleVar(p1);
+	%parameters(19) = m_bottle(p1);
 	[t,allStates] = ode45(@(t,state) rocketTrajectory(t,state, ...
-	parameters,windvector, 45),t,state,opts);
+		parameters,windvector, 45),t,state,opts);
 	plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
 	landings(p1,:) = [allStates(end,7), allStates(end,8)]; % record landing
 end
+
+% Vary dry mass of bottle
+for p1 = 1:length(bottleVar)
+	state(2) = state(2)+bottleVar(p1);
+	[t,allStates] = ode45(@(t,state) rocketTrajectory(t,state, ...
+		parameters,windvector, 45),t,state,opts);
+	plot3(allStates(:,7),allStates(:,8),allStates(:,9)); %plot(x,y,z)
+	landings(p1,:) = [allStates(end,7), allStates(end,8)]; % record landing
+end
+
+
+
 
 % Plot error elipses
 %plotErrorEllipse();

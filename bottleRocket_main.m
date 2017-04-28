@@ -68,7 +68,7 @@ zlabel('Vertical height (m)')
 
 
 %% Monte Carlo Simulation
-%monteCarlo(t,state,parameters,opts);
+monteCarlo(t,state,parameters,windvector,opts);
 
 
 %% Thrust Interpolation model
@@ -96,15 +96,15 @@ zlabel('Vertical height (m)')
 %}
 
 %Sensitivity Analysis
-varyVolWater(t, state, parameters);
-varyDragCoeff(t, state, parameters);
-varyDensity(t, state, parameters);
-varyPressure(t, state, parameters);
-varyAngle(t, state, parameters);
+%varyVolWater(t, state, parameters);
+%varyDragCoeff(t, state, parameters);
+%varyDensity(t, state, parameters);
+%varyPressure(t, state, parameters);
+%varyAngle(t, state, parameters);
 
 %TODO display delta distance achieved by each optimization
 
-
+%{
 % Analyze static test stand data
 Isp_Avg = staticTests();
 
@@ -136,4 +136,4 @@ title('Bottle Rocket Flight, I_{sp} Model')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
-
+%}
