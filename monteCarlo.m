@@ -22,10 +22,11 @@ num_var = 100; % number of variations of each parameter
 rng('shuffle')
 
 % Define error in parameters
-m_bottle_var = 2;       % error in dry mass of bottle
-theta_var = 1.5;        % error in launch angle
-cd_var = 0.05;          % error in coefficient of drag
-wind_var = 2;           % error in wind measurement
+m_bottle_var = 0.05;	% error in dry mass of bottle
+theta_var = 1;		% error in launch angle
+cd_var = 0.0068;	% error in coefficient of drag
+%cd_var = 0.068;	% error in coefficient of drag
+wind_var = 1.34112;	% error in wind measurement
 Isp_var = 0.0348;	% error in Isp calculation
 
 % Initialize landing coordinates
@@ -60,13 +61,14 @@ for var = 1:num_var
 	bottleVar = 0.001*((-m_bottle_var)+2*m_bottle_var*rand);
 	theta = 45-theta_var + 2*theta_var*rand;
 	cdVar = -cd_var + 2*cd_var*rand;
-	windVar = -wind_var + 2*wind_var*rand;
+	windVarX = -wind_var + 2*wind_var*rand;
+	windVarY = -wind_var + 2*wind_var*rand;
 	Isp = 1.5-Isp_var + 2*Isp_var*rand;
 
 	% Modify parameters
 	state(2) = state(2)+bottleVar;
 	parameters(9) = parameters(9) + cdVar;
-	windvector = [windvector(1)+windVar; windvector(2)+windVar; windvector(3)];
+	windvector = [windvector(1)+windVarX; windvector(2)+windVarY; windvector(3)];
 
 	% Solve thermo system
 	[t,allStates] = ode45(@(t,state) rocketTrajectory(t,state, ...

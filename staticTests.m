@@ -16,7 +16,6 @@ Last modified:  04/20/2017
 %}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all;close all;clc;
 
 % Get names of files to analyze
 addpath('Static Test Stand Data');

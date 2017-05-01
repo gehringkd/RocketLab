@@ -18,8 +18,9 @@ Last modified:  04/25/2017 by Keith Covington
 figure;
 plot(x,y,'k.','markersize',6)
 axis equal; grid on;
-xlabel('x [m]');
-ylabel('y [m]');
+title('Monte Carlo - Landing Sites');
+xlabel('Downrange Distance [m]');
+ylabel('Crossrange Distance [m]');
 hold on;
 
 % Calculate covariance matrix

@@ -86,7 +86,9 @@ if t <= time(end) && m_R >= 0
     end
 
 	F = y1 + (t-x1)*(y2-y1)/(x2-x1);
-<<<<<<< HEAD
+
+
+
 	F = abs(F);
     
     if m_R >= .144+m_air_i %mass bottle + air, just troubleshooting right now
@@ -102,10 +104,8 @@ if t <= time(end) && m_R >= 0
         disp('hm');
     end
             
-=======
-	V_e = sqrt(F/rho_w/A_t);
-	dm_Rdt = rho_w*A_t*V_e;
->>>>>>> ebdcd1c52de83e9540c8a61398096ed3538558a5
+%	V_e = sqrt(F/rho_w/A_t);
+%	dm_Rdt = rho_w*A_t*V_e;
 
 disp(['Phase 1  t=' num2str(t) ' s']);
 

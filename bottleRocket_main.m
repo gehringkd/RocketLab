@@ -68,7 +68,7 @@ zlabel('Vertical height (m)')
 
 
 %% Monte Carlo Simulation
-monteCarlo(t,state,parameters,windvector,opts);
+%monteCarlo(t,state,parameters,windvector,opts);
 
 
 
@@ -76,19 +76,18 @@ monteCarlo(t,state,parameters,windvector,opts);
 %% Isp model and thrust interpolation
 
 % Get static test stand data for Group 24
-%thrustData = group24Thrust();
-%state(1) = [];
-%state(2) = [];
+thrustData = group24Thrust();
+state(1) = [];
+state(2) = [];
 
 %% Thrust Interpolation model
 % Get static test stand data for Group 24
 %thrustData = group24Thrust();
 
 %plot(thrustData(:,2),thrustData(:,1))
-%{
 
 %Calculate flight path using ode45
-[t,allStates] = ode45(@(t,state) thrustInterp(t,state,parameters,windvector,41,thrustData) ...
+[t,allStates] = ode45(@(t,state) thrustInterp2becausegitsadick(t,state,parameters,windvector,41,thrustData) ...
     ,t,state,opts);
 
 %Graph flight path
@@ -102,7 +101,6 @@ xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
 
-%}
 
 %Sensitivity Analysis
 %varyVolWater(t, state, parameters);
@@ -113,7 +111,6 @@ zlabel('Vertical height (m)')
 
 %TODO display delta distance achieved by each optimization
 
-%{
 % Analyze static test stand data
 Isp_Avg = staticTests();
 
@@ -123,12 +120,12 @@ tspan = [T_v_t(end,1), T_v_t(end,2)];
 Isp = calcImpulse(T_v_t(:,1), T_v_t(:,2), 1);
 
 %Rocket Equation/Isp model
-    %find initial velocity
-    m_initial = state(2);
-    m_final = parameters(19); %mass bottle
-    V1 = Isp*9.81*log(m_initial/m_final);
-    V1 = [cosd(45)*V1, 0, cosd(45)*V1];
-    state2 = [V1, 0, 0, 0.1];
+%find initial velocity
+m_initial = state(2);
+m_final = parameters(19); %mass bottle
+V1 = Isp*9.81*log(m_initial/m_final);
+V1 = [cosd(45)*V1, 0, cosd(45)*V1];
+state2 = [V1, 0, 0, 0.1];
 
 opts = odeset('Events',@stopping_point2); % define event to stop ode45
 t2 = [0,5];
@@ -145,4 +142,3 @@ title('Bottle Rocket Flight, I_{sp} Model')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
-%}
