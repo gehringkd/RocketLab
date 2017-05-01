@@ -80,6 +80,8 @@ for var = 1:num_var
 end
 close(wbar); % close progress bar
 
+plot3(64.3128,0,0, 'r*','markersize',50)
+
 % Plot error elipses
 plotErrorEllipse(landings(:,1), landings(:,2));
 
