@@ -26,7 +26,7 @@ m_bottle_var = 0.05;	% error in dry mass of bottle
 theta_var = 1;		% error in launch angle
 cd_var = 0.0068;	% error in coefficient of drag
 %cd_var = 0.068;	% error in coefficient of drag
-wind_var = 1.34112;	% error in wind measurement
+wind_var = 2*0.44704;	% error in wind measurement
 Isp_var = 0.0348;	% error in Isp calculation
 
 % Initialize landing coordinates

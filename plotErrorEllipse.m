@@ -43,3 +43,9 @@ plot(2*x_vect+mean_x, 2*y_vect+mean_y, 'g')
 plot(3*x_vect+mean_x, 3*y_vect+mean_y, 'r')
 
 
+%% Manually plot our actual landing coordinates
+
+plot(64.3128,0, 'r*','markersize',50)
+
+
+

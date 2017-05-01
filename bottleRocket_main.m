@@ -68,8 +68,8 @@ zlabel('Vertical height (m)')
 
 
 %% Monte Carlo Simulation
-%monteCarlo(t,state,parameters,windvector,opts);
-
+monteCarlo(t,state,parameters,windvector,opts);
+%{
 
 
 
@@ -142,3 +142,5 @@ title('Bottle Rocket Flight, I_{sp} Model')
 xlabel('Downrange distance (m)')
 ylabel('Crossrange distance (m)')
 zlabel('Vertical height (m)')
+
+%}
