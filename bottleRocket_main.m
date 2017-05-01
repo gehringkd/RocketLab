@@ -71,28 +71,21 @@ zlabel('Vertical height (m)')
 monteCarlo(t,state,parameters,windvector,opts);
 
 
-<<<<<<< HEAD
-
-
-
-
-
 
 
 %% Isp model and thrust interpolation
 
 % Get static test stand data for Group 24
-thrustData = group24Thrust();
-state(1) = [];
-state(2) = [];
-=======
+%thrustData = group24Thrust();
+%state(1) = [];
+%state(2) = [];
+
 %% Thrust Interpolation model
 % Get static test stand data for Group 24
 %thrustData = group24Thrust();
 
 %plot(thrustData(:,2),thrustData(:,1))
 %{
->>>>>>> ebdcd1c52de83e9540c8a61398096ed3538558a5
 
 %Calculate flight path using ode45
 [t,allStates] = ode45(@(t,state) thrustInterp(t,state,parameters,windvector,41,thrustData) ...

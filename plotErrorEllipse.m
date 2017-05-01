@@ -1,11 +1,10 @@
-function [] = plotErrorEllipse(t, state, parameters)
+function [] = plotErrorEllipse(x, y)
 %plotErrorEllipse plots the error ellipses from Monte Carlo simulation.
 %{
 The purpose of this program is to 
 
-Inputs: t       - time
-        system  - system parameters
-        parameters - environmental parameters
+Inputs: landings - (x,y) coords of landings
+        
 
 Outputs: ------------------------------------
 
@@ -24,7 +23,7 @@ ylabel('y [m]');
 hold on;
 
 % Calculate covariance matrix
-P = cov(x,y)
+P = cov(x,y);
 mean_x = mean(x);
 mean_y = mean(y);
 
@@ -41,13 +40,5 @@ y_vect = xy_vect(:,2);
 plot(1*x_vect+mean_x, 1*y_vect+mean_y, 'b')
 plot(2*x_vect+mean_x, 2*y_vect+mean_y, 'g')
 plot(3*x_vect+mean_x, 3*y_vect+mean_y, 'r')
-
-
-
-
-
-
-
-
 
 
